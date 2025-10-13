@@ -18,6 +18,7 @@
 ---
 ## 0. ROZPOCZNIJ POBIERANIE!
 0.1. Wejdź na stronę: http://download.opencontent.netflix.com.s3.amazonaws.com/index.html?prefix=Netflix_test_conditions/
+
 0.2. Pobierz kilka sekwencji z rozszerzeniem .yuv
 
 

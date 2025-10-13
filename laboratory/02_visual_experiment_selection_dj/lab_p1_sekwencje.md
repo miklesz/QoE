@@ -69,7 +69,7 @@ Aby poprawnie odczytać taki plik, należy **ręcznie podać parametry wideo**, 
 **Przykład odtwarzania surowej sekwencji YUV:**
 
 ```bash
-ffplay -video_size 352x288 -pix_fmt yuv420p -framerate 30 foreman_cif.yuv
+ffplay -video_size 352x288 -pix_fmt yuv420p -framerate 30 foreman.yuv
 ```
 
 ---
@@ -179,21 +179,21 @@ ffplay foreman_cif.y4m
 #### Podstawowe:
 1. Odtwórz sekwencję YUV:
    ```bash
-   ffplay -video_size 352x288 -pixel_format yuv420p -framerate 30 foreman_cif.yuv
+   ffplay -video_size 352x288 -pixel_format yuv420p -framerate 30 foreman.yuv
    ```
 2. Zmień liczbę klatek na sekundę:
    ```bash
-   ffplay -video_size 352x288 -pix_fmt yuv420p -framerate 10 foreman_cif.yuv
+   ffplay -video_size 352x288 -pix_fmt yuv420p -framerate 10 foreman.yuv
    ```
 
 #### Zaawansowane:
 1. Zastosuj filtr skalujący:
    ```bash
-   ffplay -video_size 352x288 -pix_fmt yuv420p -vf scale=704:576 foreman_cif.yuv
+   ffplay -video_size 352x288 -pix_fmt yuv420p -vf scale=704:576 foreman.yuv
    ```
 2. Dodaj filtr wizualny (np. negatyw, jasność):
    ```bash
-   ffplay -video_size 352x288 -pix_fmt yuv420p -vf "eq=contrast=1.2:brightness=0.05" foreman_cif.yuv
+   ffplay -video_size 352x288 -pix_fmt yuv420p -vf "eq=contrast=1.2:brightness=0.05" foreman.yuv
    ```
 3. Podgląd histogramu:
    ```bash
@@ -223,7 +223,7 @@ ffplay foreman_cif.y4m
    ```
 2. Wycinek z pliku YUV:
    ```bash
-   ffmpeg -f rawvideo -video_size 352x288 -pix_fmt yuv420p -framerate 30 -i foreman_cif.yuv -ss 1 -t 2 -c:v rawvideo output_cut.yuv
+   ffmpeg -f rawvideo -video_size 352x288 -pix_fmt yuv420p -framerate 30 -i foreman.yuv -ss 1 -t 2 -c:v rawvideo output_cut.yuv
    ```
 3. Usuwanie fragmentu (np. 5–10 s) i łączenie pozostałych części — poprzez listę `concat`.
 

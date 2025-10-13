@@ -12,7 +12,7 @@
 **Wymagania:**  
 - Zainstalowany pakiet **FFmpeg** (zawiera `ffmpeg`, `ffprobe`, `ffplay`)  
 - Dostępne pliki testowe:  
-  - `sample.mp4` (lub `input.mp4`)  
+  - `sample_sparks.mp4` (lub `input.mp4`)  
   - surowa sekwencja YUV, np. `foreman.yuv` 300 frames (CIF: 352x288, 4:2:0) - pobierz stąd: https://hlevkin.com/hlevkin/TestVideo/foreman.yuv
 
 ---
@@ -152,11 +152,11 @@ ffplay foreman_cif.y4m
 #### Podstawowe:
 1. Wyświetl informacje o pliku:
    ```bash
-   ffprobe sample.mp4
+   ffprobe sample_sparks.mp4
    ```
 2. Uzyskaj tylko kluczowe dane w formacie JSON:
    ```bash
-   ffprobe -v quiet -print_format json -show_format -show_streams sample.mp4
+   ffprobe -v quiet -print_format json -show_format -show_streams sample_sparks.mp4
    ```
 3. Odpowiedz:
    - Jakie są kodeki wideo i audio?
@@ -165,7 +165,7 @@ ffplay foreman_cif.y4m
 #### Zaawansowane:
 1. Analiza ramek:
    ```bash
-   ffprobe -select_streams v:0 -show_frames -show_entries frame=pkt_pts_time,pkt_size -of csv sample.mp4 | head -n 10
+   ffprobe -select_streams v:0 -show_frames -show_entries frame=pkt_pts_time,pkt_size -of csv sample_sparks.mp4 | head -n 10
    ```
 2. Oblicz średni rozmiar klatki (np. `awk '{sum+=$2} END {print sum/NR}'`).
 3. Sprawdź czy bitrate jest stały, czy zmienny.
@@ -197,7 +197,7 @@ ffplay foreman_cif.y4m
    ```
 3. Podgląd histogramu:
    ```bash
-   ffplay -i sample.mp4 -vf "histogram"
+   ffplay -i sample_sparks.mp4 -vf "histogram"
    ```
 
 ---
@@ -209,7 +209,7 @@ ffplay foreman_cif.y4m
 #### Podstawowe:
 1. Wycięcie fragmentu 5 sekund od pozycji 3 s:
    ```bash
-   ffmpeg -ss 3 -t 5 -i sample.mp4 -c copy clip.mp4
+   ffmpeg -ss 3 -t 5 -i sample_sparks.mp4 -c copy clip.mp4
    ```
 2. Sprawdź długość wycinka:
    ```bash
@@ -219,7 +219,7 @@ ffplay foreman_cif.y4m
 #### Zaawansowane:
 1. Wycinanie z dokładnością klatkową (rekompresja):
    ```bash
-   ffmpeg -ss 3 -to 8 -i sample.mp4 -c:v libx264 -preset fast -crf 23 cut_reencoded.mp4
+   ffmpeg -ss 3 -to 8 -i sample_sparks.mp4 -c:v libx264 -preset fast -crf 23 cut_reencoded.mp4
    ```
 2. Wycinek z pliku YUV:
    ```bash
@@ -235,33 +235,33 @@ ffplay foreman_cif.y4m
 
 #### 4.1. Kompresja CBR – stały bitrate
 ```bash
-ffmpeg -i sample.mp4 -c:v libx264 -b:v 1M -minrate 1M -maxrate 1M -bufsize 2M output_cbr.mp4
+ffmpeg -i sample_sparks.mp4 -c:v libx264 -b:v 1M -minrate 1M -maxrate 1M -bufsize 2M output_cbr.mp4
 ```
 
 #### 4.2. Kompresja VBR – zmienny bitrate
 ```bash
-ffmpeg -i sample.mp4 -c:v libx264 -b:v 1M -maxrate 1.5M -bufsize 3M output_vbr.mp4
+ffmpeg -i sample_sparks.mp4 -c:v libx264 -b:v 1M -maxrate 1.5M -bufsize 3M output_vbr.mp4
 ```
 
 #### 4.3. Kompresja CRF – stały współczynnik kwantyzacji
 ```bash
-ffmpeg -i sample.mp4 -c:v libx264 -preset slow -crf 23 output_crf.mp4
+ffmpeg -i sample_sparks.mp4 -c:v libx264 -preset slow -crf 23 output_crf.mp4
 ```
 
 #### 4.4. Kompresja z ustalonym parametrem QP
 ```bash
-ffmpeg -i sample.mp4 -c:v libx264 -qp 25 output_qp25.mp4
+ffmpeg -i sample_sparks.mp4 -c:v libx264 -qp 25 output_qp25.mp4
 ```
 
 #### 4.5. (Zaawansowane) Dwupasowe kodowanie
 ```bash
-ffmpeg -y -i sample.mp4 -c:v libx264 -b:v 1M -pass 1 -an -f null /dev/null
-ffmpeg -i sample.mp4 -c:v libx264 -b:v 1M -pass 2 -c:a aac output_2pass.mp4
+ffmpeg -y -i sample_sparks.mp4 -c:v libx264 -b:v 1M -pass 1 -an -f null /dev/null
+ffmpeg -i sample_sparks.mp4 -c:v libx264 -b:v 1M -pass 2 -c:a aac output_2pass.mp4
 ```
 
 #### 4.6. (Opcjonalne) Kompresja bezstratna
 ```bash
-ffmpeg -i sample.mp4 -c:v libx264 -crf 0 output_lossless.mp4
+ffmpeg -i sample_sparks.mp4 -c:v libx264 -crf 0 output_lossless.mp4
 ```
 
 **Porównaj:**  

@@ -85,7 +85,7 @@ Nagłówek opisuje:
 
 Dzięki temu formatowi Y4M programy takie jak FFmpeg, FFplay czy inne narzędzia mogą odczytać plik **bez konieczności ręcznego określania parametrów**.
 
-📺 **Przykład odtwarzania sekwencji Y4M:**
+**Przykład odtwarzania sekwencji Y4M:**
 
 ```bash
 ffplay foreman_cif.y4m
@@ -107,24 +107,24 @@ ffplay foreman_cif.y4m
 
 ### 3. Strategie kompresji i sterowanie jakością
 
-#### 🔹 Stały bitrate (CBR — Constant Bitrate)
+#### Stały bitrate (CBR — Constant Bitrate)
 - Stała liczba bitów na sekundę.
 - Prosty do przewidzenia rozmiar i przepływność, kosztem jakości w trudnych scenach.  
 **Zastosowanie:** transmisje w czasie rzeczywistym, systemy o stałej przepustowości.
 
-#### 🔹 Zmienny bitrate (VBR — Variable Bitrate)
+#### Zmienny bitrate (VBR — Variable Bitrate)
 - Bitrate zależny od złożoności sceny.  
 - Lepsza jakość przy tej samej średniej przepływności.  
 **Zastosowanie:** zapisy archiwalne, dystrybucja treści offline.
 
-#### 🔹 Stały współczynnik kwantyzacji (CQP / CRF)
+#### Stały współczynnik kwantyzacji (CQP / CRF)
 - Kompresja sterowana poziomem jakości, nie przepływnością.  
 - Parametr **CRF** (dla H.264/H.265) określa „jakość docelową”:  
   - `CRF=18` → bardzo dobra jakość,  
   - `CRF=28` → gorsza jakość, mniejszy plik.  
 **Zastosowanie:** archiwizacja materiałów, analiza wpływu strat kompresji.
 
-#### 🔹 Inne tryby:
+#### Inne tryby:
 | Tryb | Opis |
 |------|------|
 | **2-pass encoding** | Dwukrotne kodowanie dla precyzyjnego bitrate’u |

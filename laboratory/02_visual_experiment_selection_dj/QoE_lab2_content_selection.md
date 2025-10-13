@@ -63,13 +63,13 @@ Format YUV **nie zawiera żadnych nagłówków ani metadanych** — są to wył�
 
 Aby poprawnie odczytać taki plik, należy **ręcznie podać parametry wideo**, m.in.:
 - rozdzielczość (`-video_size`),
-- format próbkowania (`-pix_fmt`, np. `yuv420p`, `yuv422p`, `yuv444p`),
+- format próbkowania (`-pixel_format`, np. `yuv420p`, `yuv422p`, `yuv444p`),
 - liczbę klatek na sekundę (`-framerate`).
 
 **Przykład odtwarzania surowej sekwencji YUV:**
 
 ```bash
-ffplay -video_size 352x288 -pix_fmt yuv420p -framerate 30 foreman.yuv
+ffplay -video_size 352x288 -pixel_format yuv420p -framerate 30 foreman.yuv
 ```
 
 ---
@@ -100,7 +100,7 @@ ffplay foreman_cif.y4m
 | Zawiera nagłówek? |  Nie | Tak |
 | Zawiera metadane (rozdzielczość, fps)? | Nie | Tak |
 | Wymaga ręcznego określenia parametrów? | Tak | Nie |
-| Kompatybilność z narzędziami | Wymaga opcji `-video_size`, `-pix_fmt` | Automatycznie rozpoznawany |
+| Kompatybilność z narzędziami | Wymaga opcji `-video_size`, `-pixel_format` | Automatycznie rozpoznawany |
 | Typowy rozmiar pliku | Minimalny (brak nagłówków) | Nieco większy (nagłówek tekstowy) |
 | Zastosowanie | surowe dane z kamer, testy kodeków | wymiana danych między programami, analiza, kodowanie |
 ---
@@ -183,17 +183,17 @@ ffplay foreman_cif.y4m
    ```
 2. Zmień liczbę klatek na sekundę:
    ```bash
-   ffplay -video_size 352x288 -pix_fmt yuv420p -framerate 10 foreman.yuv
+   ffplay -video_size 352x288 -pixel_format yuv420p -framerate 10 foreman.yuv
    ```
 
 #### Zaawansowane:
 1. Zastosuj filtr skalujący:
    ```bash
-   ffplay -video_size 352x288 -pix_fmt yuv420p -vf scale=704:576 foreman.yuv
+   ffplay -video_size 352x288 -pixel_format yuv420p -vf scale=704:576 foreman.yuv
    ```
 2. Dodaj filtr wizualny (np. negatyw, jasność):
    ```bash
-   ffplay -video_size 352x288 -pix_fmt yuv420p -vf "eq=contrast=1.2:brightness=0.05" foreman.yuv
+   ffplay -video_size 352x288 -pixel_format yuv420p -vf "eq=contrast=1.2:brightness=0.05" foreman.yuv
    ```
 3. Podgląd histogramu:
    ```bash
@@ -223,7 +223,7 @@ ffplay foreman_cif.y4m
    ```
 2. Wycinek z pliku YUV:
    ```bash
-   ffmpeg -f rawvideo -video_size 352x288 -pix_fmt yuv420p -framerate 30 -i foreman.yuv -ss 1 -t 2 -c:v rawvideo output_cut.yuv
+   ffmpeg -f rawvideo -video_size 352x288 -pixel_format yuv420p -framerate 30 -i foreman.yuv -ss 1 -t 2 -c:v rawvideo output_cut.yuv
    ```
 3. Usuwanie fragmentu (np. 5–10 s) i łączenie pozostałych części — poprzez listę `concat`.
 
@@ -299,7 +299,7 @@ lub programu dostępnego tu: `https://github.com/IENT/YUView`
 
 ## 2. Wycinanie sekwencji
 
-`ffmpeg -s 1920x1080 -pix_fmt yuv420p -i input.yuv -ss 00:00:10 -t 5 output.yuv`
+`ffmpeg -s 1920x1080 -pixel_format yuv420p -i input.yuv -ss 00:00:10 -t 5 output.yuv`
 
 ## 3. Kompresja sekwencji
 

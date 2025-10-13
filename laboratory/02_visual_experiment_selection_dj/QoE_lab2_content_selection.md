@@ -13,7 +13,7 @@
 - Zainstalowany pakiet **FFmpeg** (zawiera `ffmpeg`, `ffprobe`, `ffplay`)  
 - Dostępne pliki testowe:  
   - `sample.mp4` (lub `input.mp4`)  
-  - surowa sekwencja YUV, np. `foreman.yuv` - pobierz stąd: https://hlevkin.com/hlevkin/TestVideo/foreman.yuv
+  - surowa sekwencja YUV, np. `foreman.yuv` 300 frames (CIF: 352x288, 4:2:0) - pobierz stąd: https://hlevkin.com/hlevkin/TestVideo/foreman.yuv
 
 ---
 ## 0. ROZPOCZNIJ POBIERANIE!

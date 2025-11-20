@@ -1,26 +1,23 @@
-2025-10-26 12:02:07,049 __main__ INFO: Running requested AGH VQIs on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/clean.mp4)
-2025-10-26 12:02:09,765 __main__ INFO: Running the UGC IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/clean.mp4)
-2025-10-26 12:02:09,890 __main__ INFO: All results stored in the VQIs_for_clean.csv file
-2025-10-26 12:02:09,982 __main__ INFO: Running the Colourfulness IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blocky.mp4)
-2025-10-26 12:02:10,714 __main__ INFO: Running requested AGH VQIs on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blocky.mp4)
-2025-10-26 12:02:13,361 __main__ INFO: Running the UGC IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blocky.mp4)
-2025-10-26 12:02:13,480 __main__ INFO: All results stored in the VQIs_for_blocky.csv file
-2025-10-26 12:02:13,559 __main__ INFO: Running the Colourfulness IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/clean.mp4)
-2025-10-26 12:02:14,382 __main__ INFO: Running requested AGH VQIs on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/clean.mp4)
-2025-10-26 12:02:17,127 __main__ INFO: Running the UGC IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/clean.mp4)
-2025-10-26 12:02:17,255 __main__ INFO: All results stored in the VQIs_for_clean.csv file
-2025-10-26 12:02:17,340 __main__ INFO: Running the Colourfulness IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blur.mp4)
-2025-10-26 12:02:18,081 __main__ INFO: Running requested AGH VQIs on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blur.mp4)
-2025-10-26 12:02:20,731 __main__ INFO: Running the UGC IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blur.mp4)
-2025-10-26 12:02:20,852 __main__ INFO: All results stored in the VQIs_for_blur.csv file
-2025-10-26 12:02:20,935 __main__ INFO: Running the Colourfulness IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/noisy.mp4)
-2025-10-26 12:02:21,864 __main__ INFO: Running requested AGH VQIs on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/noisy.mp4)
-2025-10-26 12:02:24,861 __main__ INFO: Running the UGC IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/noisy.mp4)
-2025-10-26 12:02:24,991 __main__ INFO: All results stored in the VQIs_for_noisy.csv file
-2025-10-26 12:02:25,314 __main__ INFO: Running the Colourfulness IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blur.mp4)
-2025-10-26 12:02:26,059 __main__ INFO: Running requested AGH VQIs on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blur.mp4)
-2025-10-26 12:02:28,813 __main__ INFO: Running the UGC IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blur.mp4)
-2025-10-26 12:02:28,934 __main__ INFO: Casting Blur from 720p to 1080p.
-2025-10-26 12:02:28,937 __main__ INFO: Casting Contrast from 720p to 1080p.
-2025-10-26 12:02:28,939 __main__ INFO: Casting Exposure(bri) from 720p to 1080p.
-2025-10-26 12:02:28,942 __main__ INFO: All results stored in the VQIs_for_blur.csv file
+2025-10-27 14:50:35,652 __main__ INFO: Running requested AGH VQIs on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/clean.mp4)
+2025-10-27 14:50:38,225 __main__ INFO: Running the UGC IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/clean.mp4)
+2025-10-27 14:50:38,378 __main__ INFO: All results stored in the VQIs_for_clean.csv file
+2025-10-27 14:53:25,634 __main__ INFO: Running the Colourfulness IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blocky.mp4)
+2025-10-27 14:53:26,358 __main__ INFO: Running requested AGH VQIs on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blocky.mp4)
+2025-10-27 14:53:29,023 __main__ INFO: Running the UGC IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blocky.mp4)
+2025-10-27 14:53:29,161 __main__ INFO: All results stored in the VQIs_for_blocky.csv file
+2025-10-27 14:53:29,241 __main__ INFO: Running the Colourfulness IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/clean.mp4)
+2025-10-27 14:53:30,065 __main__ INFO: Running requested AGH VQIs on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/clean.mp4)
+2025-10-27 14:53:32,731 __main__ INFO: Running the UGC IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/clean.mp4)
+2025-10-27 14:53:32,855 __main__ INFO: All results stored in the VQIs_for_clean.csv file
+2025-10-27 14:53:32,934 __main__ INFO: Running the Colourfulness IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blur.mp4)
+2025-10-27 14:53:33,691 __main__ INFO: Running requested AGH VQIs on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blur.mp4)
+2025-10-27 14:53:36,406 __main__ INFO: Running the UGC IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blur.mp4)
+2025-10-27 14:53:36,527 __main__ INFO: All results stored in the VQIs_for_blur.csv file
+2025-10-27 14:53:36,528 __main__ INFO: Skipping a subdirectory (data/.ipynb_checkpoints)
+2025-10-27 15:00:16,280 __main__ INFO: Running the Colourfulness IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blur.mp4)
+2025-10-27 15:00:16,967 __main__ INFO: Running requested AGH VQIs on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blur.mp4)
+2025-10-27 15:00:19,429 __main__ INFO: Running the UGC IQI on the input (/Users/miklesz/Documents/Courses/QoE/laboratory/01_objective_metrics_ml/data/blur.mp4)
+2025-10-27 15:00:19,552 __main__ INFO: Casting Blur from 720p to 1080p.
+2025-10-27 15:00:19,557 __main__ INFO: Casting Contrast from 720p to 1080p.
+2025-10-27 15:00:19,559 __main__ INFO: Casting Exposure(bri) from 720p to 1080p.
+2025-10-27 15:00:19,563 __main__ INFO: All results stored in the VQIs_for_blur.csv file

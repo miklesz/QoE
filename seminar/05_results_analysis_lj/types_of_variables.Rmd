@@ -1,0 +1,432 @@
+---
+title: "Untitled"
+author: "Lucjan Janowski"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+
+```{python cars}
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+tips = pd.DataFrame({
+    "total_bill": [16.99, 10.34, 21.01, 23.68, 24.59, 25.29, 8.77, 26.88, 15.04, 14.78, 10.27, 35.26],
+    "tip":        [1.01,   1.66,  3.50,  3.31,  3.61,  4.71, 2.00,  3.12,  1.96,  3.23,  1.50,  5.00],
+    "sex":        ["Female","Male","Male","Male","Female","Female","Male","Male","Female","Male","Male","Female"],
+    "education":       ["primary education","primary education","secondary education","secondary education","secondary education","higher education","higher education","primary education","higher education","secondary education","secondary education","secondary education"],
+    "size":       [2,2,2,2,4,4,2,4,2,2,8,4]  
+})
+
+print(tips)
+
+plt.figure()  # start a fresh figure
+
+sns.scatterplot(
+    data=tips,
+    x="total_bill",
+    y="tip",
+    hue="education",        # Male vs Female -> different colors
+    style="sex",      # Male vs Female -> different marker shapes
+    size="size",      # table size -> different bubble sizes
+    sizes=(50, 400)   # force min/max bubble area to be visually far apart
+)
+
+plt.title("Tips vs total bill (seaborn aesthetics)")
+plt.xlabel("Total bill [$]")
+plt.ylabel("Tip [$]")
+plt.legend(loc="upper left", bbox_to_anchor=(1,1))  # push legend to the side
+plt.tight_layout()
+plt.show()
+
+```
+```{python plot_2}
+plt.figure()  # start a fresh figure
+
+sns.scatterplot(
+    data=tips,
+    x="total_bill",
+    y="tip",
+    hue="size",        # Male vs Female -> different colors
+    style="education",      # Male vs Female -> different marker shapes
+    size="sex",      # table size -> different bubble sizes
+    sizes=(50, 400)   # force min/max bubble area to be visually far apart
+)
+
+plt.title("Tips vs total bill (seaborn aesthetics)")
+plt.xlabel("Total bill [$]")
+plt.ylabel("Tip [$]")
+plt.legend(loc="upper left", bbox_to_anchor=(1,1))  # push legend to the side
+plt.tight_layout()
+plt.show()
+
+```
+
+```{python plot_2}
+import pandas as pd
+import numpy as np
+import re
+
+# 1. load your file
+df = pd.read_csv("subjective_scores_corrected.csv")
+
+# 2. use a regex to break clip_id into components
+#    pattern explanation:
+#    ^(?P<SRC>[^_]+)         = everything up to first underscore  -> SRC
+#      _(?P<resw>\d+)        = underscore + width number          -> resw
+#      x(?P<resh>\d+)        = 'x' + height number                -> resh
+#      _(?P<bitrate>\d+)M$   = '_' + bitrate number + 'M' at end  -> bitrate
+pattern = r'^(?P<SRC>[^_]+)_(?P<resw>\d+)x(?P<resh>\d+)_(?P<bitrate>\d+)M$'
+
+extracted = df["clip_id"].str.extract(pattern)
+
+# 3. merge new columns back into the dataframe
+df = pd.concat([df, extracted], axis=1)
+
+# 4. convert numeric columns from text to int
+df["resw"] = df["resw"].astype(int)
+df["resh"] = df["resh"].astype(int)
+df["bitrate"] = df["bitrate"].astype(int)
+df["res"] = np.sqrt(df["resw"]*df["resh"])
+
+print(df.head())
+
+# 5. save to a new CSV
+df.to_csv("subjective_scores_with_parsed_cols.csv", index=False)
+print("Saved -> subjective_scores_with_parsed_cols.csv")
+
+
+```
+
+```{python agg}
+import pandas as pd
+
+df = pd.read_csv("subjective_scores_with_parsed_cols.csv")
+
+agg_df = (
+    df
+    .groupby("clip_id")
+    .agg(
+        mos=("score", "mean"),        # mean opinion score
+        std=("score", "std"),         # standard deviation
+        n=("score", "count"),         # number of ratings
+        SRC=("SRC", "first"),         # carry metadata
+        res=("res", "first"),
+        bitrate=("bitrate", "first")
+    )
+    .reset_index()
+)
+
+print(agg_df)
+```
+
+```{python plot_src}
+agg_df = (
+    df
+    .groupby("SRC")
+    .agg(
+        mos=("score", "mean"),        # mean opinion score
+        std=("score", "std"),         # standard deviation
+        n=("score", "count"),         # number of ratings
+    )
+    .reset_index()
+)
+
+# 95% confidence interval: 1.96 * sd/sqrt(n)
+agg_df["ci95"] = 1.96 * agg_df["std"] / np.sqrt(agg_df["n"])
+
+print(agg_df)
+
+plt.figure(figsize=(8,5))
+
+# We'll create numeric x positions for each SRC
+x_pos = np.arange(len(agg_df["SRC"]))
+
+# scatter points (MOS for each SRC)
+plt.scatter(
+    x_pos,
+    agg_df["mos"],
+    s=80,                   # point size
+    marker="o",
+    edgecolor="black",
+    linewidth=1.2
+)
+
+# add vertical error bars = CI95
+plt.errorbar(
+    x_pos,
+    agg_df["mos"],
+    yerr=agg_df["ci95"],
+    fmt="none",             # don't draw a second marker
+    ecolor="black",
+    elinewidth=1.5,
+    capsize=5,
+    capthick=1.5
+)
+
+# nice x-axis labels instead of 0,1,2...
+plt.xticks(x_pos, agg_df["SRC"], rotation=30, ha="right")
+
+plt.ylim(1, 5)  # because ACR 1–5 scale
+plt.xlabel("SRC")
+plt.ylabel("MOS (1–5 ACR)")
+plt.title("MOS per SRC with 95% CI")
+plt.grid(axis="y", alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+```{python plot_bitrate}
+agg_df = (
+    df
+    .groupby("bitrate")
+    .agg(
+        mos=("score", "mean"),        # mean opinion score
+        std=("score", "std"),         # standard deviation
+        n=("score", "count"),         # number of ratings
+    )
+    .reset_index()
+)
+
+# 95% confidence interval: 1.96 * sd/sqrt(n)
+agg_df["ci95"] = 1.96 * agg_df["std"] / np.sqrt(agg_df["n"])
+
+print(agg_df)
+
+plt.figure(figsize=(8,5))
+
+# scatter points (MOS for each SRC)
+plt.scatter(
+    agg_df["bitrate"],
+    agg_df["mos"],
+    s=80,                   # point size
+    marker="o",
+    edgecolor="black",
+    linewidth=1.2
+)
+
+# add vertical error bars = CI95
+plt.errorbar(
+    agg_df["bitrate"],
+    agg_df["mos"],
+    yerr=agg_df["ci95"],
+    fmt="none",             # don't draw a second marker
+    ecolor="black",
+    elinewidth=1.5,
+    capsize=5,
+    capthick=1.5
+)
+
+plt.ylim(1, 5)  # because ACR 1–5 scale
+plt.xlabel("bitrate")
+plt.ylabel("MOS (1–5 ACR)")
+plt.title("MOS per bitrate with 95% CI")
+plt.grid(axis="y", alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+
+
+```{python plot_res_bit_2}
+df_bit = df[df["bitrate"] == 2].copy()
+agg_df = (
+    df_bit
+    .groupby("resh")
+    .agg(
+        mos=("score", "mean"),        # mean opinion score
+        std=("score", "std"),         # standard deviation
+        n=("score", "count"),         # number of ratings
+    )
+    .reset_index()
+)
+
+# 95% confidence interval: 1.96 * sd/sqrt(n)
+agg_df["ci95"] = 1.96 * agg_df["std"] / np.sqrt(agg_df["n"])
+
+print(agg_df)
+
+plt.figure(figsize=(8,5))
+
+# scatter points (MOS for each SRC)
+plt.scatter(
+    agg_df["resh"],
+    agg_df["mos"],
+    s=80,                   # point size
+    marker="o",
+    edgecolor="black",
+    linewidth=1.2
+)
+
+# add vertical error bars = CI95
+plt.errorbar(
+    agg_df["resh"],
+    agg_df["mos"],
+    yerr=agg_df["ci95"],
+    fmt="none",             # don't draw a second marker
+    ecolor="black",
+    elinewidth=1.5,
+    capsize=5,
+    capthick=1.5
+)
+
+plt.ylim(1, 5)  # because ACR 1–5 scale
+plt.xlabel("resh")
+plt.ylabel("MOS (1–5 ACR)")
+plt.title("MOS per resh with 95% CI")
+plt.grid(axis="y", alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+```{python correlation}
+import pandas as pd
+
+df = pd.read_csv("subjective_scores_with_parsed_cols.csv")
+
+# ---- STEP 1: Prepare helper function to compute correlation for each subject ----
+def subject_correlation(sub_id):
+    """Compute correlation between one subject’s scores
+       and the MOS from all *other* subjects."""
+    # split data into this subject and others
+    sub_df = df[df["subject_id"] == sub_id]
+    others_df = df[df["subject_id"] != sub_id]
+    
+    # compute MOS of others for each PVS
+    mos_others = (
+        others_df.groupby("clip_id")["score"]
+        .mean()
+        .rename("mos_others")
+        .reset_index()
+    )
+
+    # merge this subject’s scores with others’ MOS
+    merged = pd.merge(sub_df, mos_others, on="clip_id", how="inner")
+
+    # compute correlation
+    corr = merged["score"].corr(merged["mos_others"])
+    return corr
+
+# ---- STEP 2: Apply to each subject ----
+corr_df = (
+    df["subject_id"]
+    .drop_duplicates()
+    .to_frame()
+)
+
+corr_df["corr_vs_others"] = corr_df["subject_id"].apply(subject_correlation)
+
+print(corr_df)
+
+df_with_corr = pd.merge(df, corr_df, on="subject_id", how="left")
+
+
+```
+
+
+```{python correlation}
+import pandas as pd
+
+df = pd.read_csv("subjective_scores_with_parsed_cols.csv")
+
+# ---- STEP 1: Prepare helper function to compute correlation for each subject ----
+def subject_correlation(sub_id):
+    """Compute correlation between one subject’s scores
+       and the MOS from all *other* subjects."""
+    # split data into this subject and others
+    sub_df = df[df["subject_id"] == sub_id]
+    others_df = df[df["subject_id"] != sub_id]
+    
+    # compute MOS of others for each PVS
+    mos_others = (
+        others_df.groupby("clip_id")["score"]
+        .mean()
+        .rename("mos_others")
+        .reset_index()
+    )
+
+    # merge this subject’s scores with others’ MOS
+    merged = pd.merge(sub_df, mos_others, on="clip_id", how="inner")
+
+    # compute correlation
+    corr = merged["score"].corr(merged["mos_others"])
+    return corr
+
+# ---- STEP 2: Apply to each subject ----
+corr_df = (
+    df["subject_id"]
+    .drop_duplicates()
+    .to_frame()
+)
+
+corr_df["corr_vs_others"] = corr_df["subject_id"].apply(subject_correlation)
+print(corr_df)
+df_with_corr = pd.merge(df, corr_df, on="subject_id", how="left")
+print(df_with_corr)
+df_with_corr.to_csv("subjective_scores_with_cor.csv", index=False)
+
+```
+
+```{python correlation}
+import pandas as pd
+
+df = pd.read_csv("subjective_scores_with_cor.csv")
+
+df_bit = df[df["bitrate"] == 2].copy()
+df_cor = df_bit[df_bit["corr_vs_others"] > 0.7].copy()
+print(df_cor)
+
+agg_df = (
+    df_cor
+    .groupby("resh")
+    .agg(
+        mos=("score", "mean"),        # mean opinion score
+        std=("score", "std"),         # standard deviation
+        n=("score", "count"),         # number of ratings
+    )
+    .reset_index()
+)
+
+# 95% confidence interval: 1.96 * sd/sqrt(n)
+agg_df["ci95"] = 1.96 * agg_df["std"] / np.sqrt(agg_df["n"])
+
+print(agg_df)
+
+plt.figure(figsize=(8,5))
+
+# scatter points (MOS for each SRC)
+plt.scatter(
+    agg_df["resh"],
+    agg_df["mos"],
+    s=80,                   # point size
+    marker="o",
+    edgecolor="black",
+    linewidth=1.2
+)
+
+# add vertical error bars = CI95
+plt.errorbar(
+    agg_df["resh"],
+    agg_df["mos"],
+    yerr=agg_df["ci95"],
+    fmt="none",             # don't draw a second marker
+    ecolor="black",
+    elinewidth=1.5,
+    capsize=5,
+    capthick=1.5
+)
+
+plt.ylim(1, 5)  # because ACR 1–5 scale
+plt.xlabel("resh")
+plt.ylabel("MOS (1–5 ACR)")
+plt.title("MOS per resh with 95% CI")
+plt.grid(axis="y", alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+

@@ -1,0 +1,1306 @@
+<!doctype html>
+<html lang="pl">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Quality of Experience</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/theme/white.css">
+    <style>
+      :root { --pt-blue: #003b70; --pt-cyan: #007c91; --pt-ink: #13212e; --pt-muted: #587083; }
+      .reveal { color: var(--pt-ink); font-family: Arial, Helvetica, sans-serif; font-size: 34px; }
+      .reveal .slides { text-align: left; }
+      .reveal h1, .reveal h2, .reveal h3 { color: var(--pt-blue); font-family: Arial, Helvetica, sans-serif; font-weight: 700; letter-spacing: 0; text-transform: none; }
+      .reveal h1 { font-size: 1.75em; margin-bottom: 0.35em; }
+      .reveal h2 { font-size: 1.3em; margin-bottom: 0.55em; }
+      .reveal p, .reveal li { line-height: 1.32; }
+      .reveal ul { margin-top: 0.25em; }
+      .reveal li + li { margin-top: 0.25em; }
+      .reveal a { color: var(--pt-cyan); text-decoration: underline; }
+      .reveal strong { color: var(--pt-blue); }
+      .reveal img { display: block; max-height: 48vh; max-width: 78%; margin: 0.6em auto 0; object-fit: contain; border: 0; box-shadow: none; }
+      .reveal video { display: block; width: min(76vw, 980px); max-height: 58vh; margin: 0.55em auto 0; }
+      .reveal video:has(source[src*="local-replacements/"]) { width: 100%; height: 360px; max-height: 360px; object-fit: contain; margin: 0.25em auto; background: #111; }
+      .reveal video[hidden] { display: none; }
+      .reveal .video-original.video-unavailable { font-size: 0.8em; margin: 1em 0; }
+      .reveal section:has(source[src*="local-replacements/"]) > p { font-size: 0.65em; margin: 0.3em 0; line-height: 1.2; }
+      .reveal section:has(source[src*="local-replacements/"]) > p.credits { font-size: 0.42em; }
+      .reveal .slides section:has(.video-intro) h2 { margin-bottom: 0.25em; }
+      .reveal .slides section p.video-intro { font-size: 0.72em; line-height: 1.25; margin: 0.25em 0 0.45em; }
+      .reveal .slides section:has(.video-intro) video:not([hidden]) { width: auto; height: 465px; max-width: 100%; max-height: none; object-fit: contain; margin: 0 auto; }
+      .reveal .slides section:has(.video-intro):has(p.small) video:not([hidden]) { height: 420px; }
+      .reveal .slides section:has(.video-intro) p.credits { font-size: 0.46em; margin: 0.3em 0; line-height: 1.2; }
+      .reveal .slides section:has(.video-intro) p.video-unavailable { font-size: 0.8em; margin: 1em 0; }
+      .reveal .video-embed { display: block; width: min(76vw, 980px); aspect-ratio: 16 / 9; margin: 0.55em auto 0; border: 0; }
+      .reveal .video-link { display: grid; place-items: center; width: min(76vw, 980px); aspect-ratio: 16 / 9; margin: 0.55em auto 0; overflow: hidden; position: relative; background: #111; text-decoration: none; }
+      .reveal .video-link img { width: 100%; max-width: none; max-height: none; height: 100%; margin: 0; object-fit: cover; }
+      .reveal .video-link span { position: absolute; bottom: 1em; padding: 0.42em 0.8em; color: #fff; background: var(--pt-blue); font-size: 0.62em; font-weight: 700; }
+      .reveal .title-slide { text-align: center; }
+      .reveal .title-slide h1 { font-size: 1.9em; }
+      .reveal .title-slide p { color: var(--pt-muted); }
+      .reveal .section-slide { display: grid !important; place-content: center; text-align: center; }
+      .reveal .section-slide h1, .reveal .section-slide h2 { font-size: 2em; }
+      .reveal .columns { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2em; align-items: start; }
+      .reveal .small { font-size: 0.72em; }
+      .reveal .credits { color: var(--pt-muted); font-size: 0.52em; margin-top: 0.35em; }
+      .reveal .stack { display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.22em; margin: 0.35em auto; max-width: 950px; }
+      .reveal .stack > div { border: 2px solid var(--pt-blue); padding: 0.35em 0.18em; min-height: 4.3em; display: grid; place-content: center; text-align: center; font-size: 0.55em; }
+      .reveal .stack .tcp { grid-column: span 3; background: #dceef2; }
+      .reveal .stack .net { background: #e7edf6; }
+      .reveal .stack .link { grid-column: span 2; background: #eff0df; }
+      .reveal .tcp-encap { display: grid; gap: 0.16em; margin: 0.65em auto 0.3em; max-width: 1050px; font-size: 0.68em; }
+      .reveal .encap-stage { display: grid; grid-template-columns: 7.5em 1fr; gap: 0.35em; min-height: 3.25em; align-items: stretch; }
+      .reveal .encap-stage > strong { display: grid; place-content: center; padding: 0.15em; border-left: 0.18em solid var(--pt-blue); background: #e7edf6; color: var(--pt-blue); text-align: center; font-size: 0.84em; }
+      .reveal .encap-units { display: flex; min-width: 0; border: 2px solid var(--pt-blue); }
+      .reveal .encap-units span { display: grid; place-content: center; min-width: 0; padding: 0.2em; border-right: 2px solid var(--pt-blue); text-align: center; font-size: 0.64em; line-height: 1.15; }
+      .reveal .encap-units span:last-child { border-right: 0; }
+      .reveal .encap-data { flex: 1 1 0; background: #e6f3d9; }
+      .reveal .encap-udp { flex: 0 0 19%; background: #f2deeb; }
+      .reveal .encap-ip { flex: 0 0 18%; background: #e7e2f5; }
+      .reveal .encap-frame { flex: 0 0 15%; background: #dceef2; }
+      .reveal .encap-stage:last-child .encap-frame:last-child { flex-basis: 9%; }
+      .reveal .encap-intro { font-size: 0.78em; }
+      .reveal .encap-caption { color: var(--pt-muted); font-size: 0.68em; text-align: center; }
+      .reveal .encap-glossary { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.5em; margin-top: 0.1em; font-size: 0.54em; text-align: center; }
+      .reveal .encap-glossary span { min-width: 0; }
+      .reveal .encap-glossary strong { color: var(--pt-blue); }
+      .reveal .encap-glossary small { display: block; color: var(--pt-muted); font-size: 0.85em; }
+      .reveal .osi-stack { display: grid; gap: 0.08em; max-width: 720px; margin: 0.35em auto; }
+      .reveal .osi-stack > div { display: grid; grid-template-columns: 2.2em 1fr; align-items: center; min-height: 1.55em; border: 2px solid var(--pt-blue); background: #e7edf6; font-size: 0.77em; text-align: left; }
+      .reveal .osi-stack > div:nth-child(-n+3) { background: #dceef2; }
+      .reveal .osi-stack > div:nth-child(n+5) { background: #eff0df; }
+      .reveal .osi-stack span { display: grid; place-items: center; height: 100%; border-right: 2px solid var(--pt-blue); color: var(--pt-blue); font-weight: 700; }
+      .reveal .osi-stack strong { padding: 0.12em 0.5em; font-weight: 600; }
+      .reveal .packet { display: flex; margin: 0.7em auto; max-width: 850px; border: 2px solid var(--pt-blue); font-size: 0.7em; }
+      .reveal .packet span { padding: 0.45em 0.75em; border-right: 2px solid var(--pt-blue); text-align: center; flex: 1; }
+      .reveal .packet span:last-child { border-right: 0; flex: 2; }
+      .reveal .decibel-scale { margin: 0.8em auto 0.65em; max-width: 1000px; }
+      .reveal .decibel-range { display: grid; grid-template-columns: 3fr 1fr 3fr; color: var(--pt-muted); font-size: 0.55em; text-align: center; }
+      .reveal .decibel-values { display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); gap: 0.12em; margin-top: 0.35em; }
+      .reveal .decibel-values > div { min-width: 0; padding: 0.4em 0.08em; border-top: 0.18em solid; background: #f6f8f9; text-align: center; font-size: 0.68em; }
+      .reveal .decibel-values .loss { border-color: #2a79a1; background: #e6f2f6; }
+      .reveal .decibel-values .unity { border-color: #59676b; background: #edf0ed; }
+      .reveal .decibel-values .gain { border-color: #a65c30; background: #f9ece1; }
+      .reveal .decibel-values strong, .reveal .decibel-values small { display: block; white-space: nowrap; }
+      .reveal .decibel-values small { margin-top: 0.32em; color: var(--pt-muted); font-size: 0.77em; }
+      .reveal .packet-layout { display: grid; grid-template-columns: 1.1fr 1.8fr 1.25fr; gap: 0.12em; margin: 0.65em auto 0.75em; max-width: 920px; font-size: 0.72em; }
+      .reveal .packet-layout > div { display: grid; align-content: center; min-height: 4.2em; padding: 0.32em 0.45em; border: 2px solid var(--pt-blue); text-align: center; }
+      .reveal .packet-layout strong { color: var(--pt-blue); font-size: 1.05em; }
+      .reveal .packet-layout small { display: block; margin-top: 0.15em; color: var(--pt-muted); font-size: 0.65em; }
+      .reveal .packet-header { background: #dceef2; }
+      .reveal .packet-data { background: #f7e8d1; }
+      .reveal .packet-trailer { background: #eff0df; border-style: dashed !important; }
+      .reveal .ipv4-header { max-width: 1000px; margin: 0.45em auto 0; border: 2px solid var(--pt-blue); font-size: 0.58em; text-align: center; }
+      .reveal .ipv4-row, .reveal .ipv4-addresses { display: grid; border-bottom: 2px solid var(--pt-blue); }
+      .reveal .ipv4-row.control { grid-template-columns: 1fr 1fr 1.2fr; }
+      .reveal .ipv4-row.fragment { grid-template-columns: 1fr 1.45fr; }
+      .reveal .ipv4-row.forwarding { grid-template-columns: 0.7fr 1fr 1.15fr; }
+      .reveal .ipv4-addresses { grid-template-columns: 1fr 1fr; border-bottom: 0; background: #e7edf6; font-weight: 700; }
+      .reveal .ipv4-header span { display: grid; gap: 0.12em; min-height: 3.8em; padding: 0.38em 0.55em; place-content: center; border-right: 2px solid var(--pt-blue); }
+      .reveal .ipv4-header span:last-child { border-right: 0; }
+      .reveal .ipv4-header small { color: var(--pt-muted); font-size: 0.83em; line-height: 1.12; }
+      .reveal .ipv4-row.control { background: #dceef2; }
+      .reveal .ipv4-row.fragment { background: #eff0df; }
+      .reveal .ipv4-row.forwarding { background: #f7e8d1; }
+      .reveal .ipv4-header-svg { display: block; width: min(100%, 1120px); max-height: 600px; margin: 0.1em auto 0; }
+      .reveal .gateway-path-svg { display: block; width: min(100%, 1040px); max-height: 410px; margin: 0.15em auto 0; }
+      .reveal .gateway-path-svg .zone { font: 700 20px sans-serif; fill: #172f3d; }
+      .reveal .gateway-path-svg .subzone, .reveal .gateway-path-svg .node-detail { font: 13px sans-serif; fill: #4f5f68; }
+      .reveal .gateway-path-svg .node-title { font: 700 17px sans-serif; fill: #172f3d; }
+      .reveal .gateway-path-svg .host-box { fill: #fff; stroke: #176b80; stroke-width: 3; }
+      .reveal .gateway-path-svg .router-box, .reveal .gateway-path-svg .router-circle { fill: #fff; stroke: #4f7f3d; stroke-width: 3; }
+      .reveal .gateway-path-svg .gateway-link { stroke: #176b80; stroke-width: 4; }
+      .reveal .gateway-path-svg .link-label { font: 700 15px sans-serif; fill: #176b80; }
+      .reveal .gateway-path-svg .route-label { font-size: 11px; }
+      .reveal .shared-medium { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.8em 1.3em; align-items: end; max-width: 1000px; margin: 0.8em auto 0; }
+      .reveal .radio-station { display: grid; justify-items: center; gap: 0.16em; font-size: 0.62em; }
+      .reveal .radio-station .node { width: 4.4em; height: 3.1em; position: relative; display: grid; place-content: center; border: 4px solid var(--station); background: #fff; color: var(--station); font-weight: 700; }
+      .reveal .radio-station .node::before { content: ''; position: absolute; top: -1.2em; left: calc(50% - 2px); width: 4px; height: 1.2em; background: var(--station); }
+      .reveal .radio-station .node::after { content: ''; position: absolute; top: -1.7em; left: calc(50% - 1.1em); width: 2.2em; height: 1.1em; border: 3px solid var(--station); border-bottom: 0; border-radius: 50% 50% 0 0; }
+      .reveal .radio-station .role { color: var(--pt-muted); font-size: 0.82em; }
+      .reveal .station-a { --station: #007c91; }
+      .reveal .station-b { --station: #b35c2e; }
+      .reveal .station-c { --station: #4f7f3d; }
+      .reveal .shared-channel { grid-column: 1 / -1; order: -1; min-height: 3.1em; display: grid; place-content: center; position: relative; overflow: hidden; color: #fff; background: #003b70; font-size: 0.68em; font-weight: 700; }
+      .reveal .shared-channel .channel-title { position: relative; z-index: 1; padding: 0.18em 0.55em; background: #003b70; }
+      .reveal .shared-channel::before { content: ''; position: absolute; z-index: 0; left: 7%; right: 7%; top: 50%; border-top: 3px solid #85c4d0; }
+      .reveal .shared-channel::after { content: 'ramka ze stacji A'; position: absolute; left: 18%; top: calc(50% - 1.45em); padding: 0.32em 0.6em; background: #007c91; font-size: 0.72em; font-weight: 700; }
+      .reveal .hidden-terminal { position: relative; display: grid; grid-template-columns: 1fr 1.2fr 1fr; grid-template-rows: 1fr 1fr; gap: 1.7em 1.1em; align-items: center; max-width: 880px; min-height: 8.3em; margin: 0.8em auto 0; }
+      .reveal .hidden-node { position: relative; z-index: 2; padding: 0.65em 0.55em; border: 3px solid var(--pt-blue); background: #fff; color: var(--pt-blue); font-size: 0.68em; font-weight: 700; text-align: center; }
+      .reveal .hidden-node.access-point { grid-area: 1 / 2; border-color: #b35c2e; color: #8a421e; }
+      .reveal .hidden-node.station-left { grid-area: 2 / 1; border-color: #007c91; color: #006779; }
+      .reveal .hidden-node.station-right { grid-area: 2 / 3; border-color: #4f7f3d; color: #3d672e; }
+      .reveal .hidden-terminal .radio-link { position: absolute; z-index: 0; top: 54%; width: 33%; border-top: 5px solid #85c4d0; transform-origin: center; }
+      .reveal .hidden-terminal .link-a { left: 18%; transform: rotate(-29deg); }
+      .reveal .hidden-terminal .link-b { right: 18%; transform: rotate(29deg); }
+      .reveal .hidden-link { grid-area: 2 / 1 / 3 / 4; align-self: end; z-index: 1; margin: 0 15%; padding-top: 0.55em; border-top: 3px dashed #b54b4b; color: #9a3030; background: #fff; font-size: 0.48em; font-weight: 700; text-align: center; }
+      .reveal .convolutional-flow { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1.25fr) auto minmax(0, 1.1fr) auto minmax(0, 1fr); align-items: stretch; gap: 0.18em; max-width: 1080px; margin: 0.85em auto; }
+      .reveal .convolutional-flow .flow-step { display: grid; align-content: center; gap: 0.22em; min-height: 5.3em; padding: 0.45em; border: 2px solid var(--pt-blue); background: #fff; color: var(--pt-text); font-size: 0.46em; text-align: center; }
+      .reveal .convolutional-flow .flow-step strong { color: var(--pt-blue); }
+      .reveal .convolutional-flow .flow-step code { color: #8a421e; font-size: 1.08em; }
+      .reveal .convolutional-flow .flow-step small { color: var(--pt-muted); font-size: 0.92em; }
+      .reveal .convolutional-flow .flow-arrow { display: grid; place-content: center; color: #007c91; font-size: 1em; font-weight: 700; }
+      .reveal .convolutional-circuit { display: grid; grid-template-columns: 1fr auto 1fr auto 1fr; gap: 0.35em; align-items: center; max-width: 980px; margin: 0.65em auto; }
+      .reveal .convolutional-circuit .tap { display: grid; gap: 0.22em; min-height: 3.65em; padding: 0.45em; border: 3px solid #007c91; background: #fff; color: #006779; font-size: 0.5em; text-align: center; }
+      .reveal .convolutional-circuit .input-tap { border-color: #b35c2e; color: #8a421e; }
+      .reveal .convolutional-circuit .tap small { color: var(--pt-muted); font-size: 0.88em; }
+      .reveal .convolutional-circuit .circuit-arrow { color: #007c91; font-size: 1em; font-weight: 700; }
+      .reveal .convolutional-circuit .generator-output { grid-column: span 2; display: grid; gap: 0.25em; min-height: 3.8em; padding: 0.48em 0.65em; border: 3px solid var(--pt-blue); background: #edf5fa; color: var(--pt-text); font-size: 0.48em; text-align: left; }
+      .reveal .convolutional-circuit .generator-output strong { color: var(--pt-blue); }
+      .reveal .convolutional-circuit .generator-output code { color: #8a421e; }
+      .reveal .convolutional-example { max-width: 1020px; margin: 0.55em auto; }
+      .reveal .convolutional-example .register-label { margin-bottom: 0.45em; color: var(--pt-muted); font-size: 0.46em; text-align: center; }
+      .reveal .convolutional-example .register-row { display: grid; grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr); gap: 0.28em; align-items: center; max-width: 740px; margin: 0 auto 0.55em; }
+      .reveal .convolutional-example .register-row > span { color: #007c91; font-weight: 700; }
+      .reveal .convolutional-example .register-cell { display: grid; gap: 0.18em; min-height: 3.35em; padding: 0.38em; border: 3px solid #007c91; background: #fff; color: #006779; font-size: 0.48em; text-align: center; }
+      .reveal .convolutional-example .register-cell.input { border-color: #b35c2e; color: #8a421e; }
+      .reveal .convolutional-example .register-cell small { color: var(--pt-muted); font-size: 0.85em; }
+      .reveal .convolutional-example .generator-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.6em; }
+      .reveal .convolutional-example .generator-card { display: grid; gap: 0.32em; min-height: 4.1em; padding: 0.48em 0.65em; border: 3px solid var(--pt-blue); background: #edf5fa; color: var(--pt-text); font-size: 0.45em; text-align: center; }
+      .reveal .convolutional-example .generator-card strong { color: var(--pt-blue); }
+      .reveal .convolutional-example .generator-card div { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 0.3em; }
+      .reveal .convolutional-example .generator-card code { padding: 0.12em 0.26em; background: #fff; color: #8a421e; }
+      .reveal .convolutional-example .generator-card b { color: #007c91; }
+      .reveal .hdb3-wave { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.16em; align-items: end; max-width: 760px; height: 5.1em; margin: 0.65em auto 0.38em; }
+      .reveal .hdb3-cell { position: relative; display: grid; grid-template-rows: 1fr auto; min-height: 5.1em; padding: 0 0.25em 0.38em; border-bottom: 3px solid #627789; color: var(--pt-text); font-size: 0.64em; text-align: center; }
+      .reveal .hdb3-cell strong, .reveal .hdb3-cell span { position: relative; z-index: 1; justify-self: center; background: #fff; }
+      .reveal .hdb3-cell strong { align-self: start; padding: 0.08em 0.32em; }
+      .reveal .hdb3-cell span { padding: 0.1em 0.25em 0; color: var(--pt-muted); font-size: 0.7em; }
+      .reveal .hdb3-cell::before { content: ''; position: absolute; z-index: 0; bottom: 0; left: 50%; width: 0; height: 0; border-left: 0.34em solid transparent; border-right: 0.34em solid transparent; transform: translateX(-50%); }
+      .reveal .hdb3-cell.pulse-b::before, .reveal .hdb3-cell.pulse-v::before { height: 3.5em; border-left: 0.34em solid #43a9b4; border-right: 0.34em solid #43a9b4; background: #43a9b4; }
+      .reveal .hdb3-cell.pulse-b { color: #006779; }
+      .reveal .hdb3-cell.pulse-v { color: #a23d3d; }
+      .reveal .hdb3-cell.pulse-v::before { border-left-color: #df8181; border-right-color: #df8181; background: #df8181; }
+      .reveal .hdb3-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65em; max-width: 790px; margin: 0.1em auto 0; color: var(--pt-muted); font-size: 0.4em; }
+      .reveal .hdb3-legend > div { display: grid; grid-template-columns: auto 1fr; gap: 0.4em; align-items: center; padding: 0.35em 0.5em; border-top: 2px solid #cfd9de; text-align: left; }
+      .reveal .hdb3-legend strong { color: var(--pt-blue); font-size: 1.25em; }
+      .reveal .hdb3-wave-svg { display: block; width: min(100%, 820px); max-height: 30vh; margin: 0.15em auto 0; overflow: visible; }
+      .reveal .hdb3-wave-svg .axis { stroke: #7b8790; stroke-width: 3; }
+      .reveal .hdb3-wave-svg .wave { fill: none; stroke: #007c91; stroke-width: 9; stroke-linejoin: round; stroke-linecap: round; }
+      .reveal .hdb3-wave-svg text { fill: var(--pt-text); font-family: Arial, sans-serif; font-size: 28px; font-weight: 700; text-anchor: middle; }
+      .reveal .hdb3-wave-svg .level { fill: var(--pt-muted); font-size: 23px; font-weight: 400; }
+      .reveal .hdb3-wave-svg .label-b { fill: #007c91; font-size: 35px; }
+      .reveal .hdb3-wave-svg .label-v { fill: #b54b4b; font-size: 35px; }
+      .reveal .encoding-benefit { display: grid; grid-template-columns: 1fr auto 1fr auto 1.35fr; gap: 0.35em; align-items: center; max-width: 930px; margin: 0.8em auto; }
+      .reveal .encoding-benefit .benefit-step { display: grid; justify-items: center; align-content: center; gap: 0.45em; min-height: 5.2em; padding: 0.45em; border: 2px solid var(--pt-blue); background: #fff; color: var(--pt-text); font-size: 0.47em; text-align: center; }
+      .reveal .encoding-benefit .benefit-step strong { color: var(--pt-blue); }
+      .reveal .encoding-benefit .benefit-arrow { color: #007c91; font-size: 1.15em; font-weight: 700; }
+      .reveal .encoding-benefit .bit-token, .reveal .encoding-benefit .benefit-mark { display: grid; place-content: center; min-width: 2.1em; min-height: 1.65em; padding: 0.1em 0.3em; background: #f8eadf; color: #8a421e; font-family: monospace; font-size: 1.15em; font-weight: 700; }
+      .reveal .encoding-benefit .benefit-mark { border-radius: 50%; background: #e4f0e7; color: #3d672e; font-family: Arial, sans-serif; }
+      .reveal .encoding-benefit .bit-pair { display: flex; gap: 0.28em; }
+      .reveal .encoding-benefit .bit-pair span { padding: 0.28em 0.38em; background: #e5f1f4; color: #006779; font-family: monospace; font-size: 0.95em; font-weight: 700; }
+      .reveal .code-lab { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0.7em; align-items: end; max-width: 900px; margin: 0.8em auto; }
+      .reveal .code-lab label { display: grid; gap: 0.28em; color: var(--pt-blue); font-size: 0.58em; font-weight: 700; }
+      .reveal .code-lab input, .reveal .code-lab select { width: 100%; box-sizing: border-box; padding: 0.38em 0.5em; border: 2px solid var(--pt-blue); border-radius: 0; background: #fff; color: var(--pt-ink); font: 700 1.1em ui-monospace, SFMono-Regular, Menlo, monospace; }
+      .reveal .code-lab select { font-family: Arial, sans-serif; }
+      .reveal .code-lab .lab-result { grid-column: 1 / -1; min-height: 3.2em; padding: 0.55em 0.7em; border-left: 6px solid var(--pt-cyan); background: #edf5fa; color: var(--pt-ink); font-size: 0.58em; line-height: 1.35; }
+      .reveal .code-lab .lab-result code { padding: 0.12em 0.28em; background: #fff; color: #8a421e; font-size: 1.06em; }
+      .reveal .two-of-five-lab { grid-template-columns: minmax(230px, 0.8fr) 1.4fr; }
+      .reveal .convolutional-lab { grid-template-columns: 1fr; }
+      .reveal .coax-layout { display: grid; grid-template-columns: minmax(260px, 0.8fr) 1.2fr; gap: 1.1em; align-items: center; }
+      .reveal .coax-cross-section { position: relative; width: 250px; aspect-ratio: 1; margin: 0 auto 0.35em; border-radius: 50%; background: #27333b; }
+      .reveal .coax-cross-section div { position: absolute; border-radius: 50%; display: grid; place-content: center; }
+      .reveal .coax-insulation { inset: 12%; background: #e8e4c7; }
+      .reveal .coax-shield { inset: 25%; background: repeating-radial-gradient(circle, #7b8790 0 3px, #c6ccd0 4px 6px); }
+      .reveal .coax-core { inset: 40%; background: #bd6b2d; }
+      .reveal .coax-legend { display: grid; grid-template-columns: 1fr 1fr; gap: 0.28em 0.6em; font-size: 0.55em; }
+      .reveal .coax-legend span::before { content: ''; display: inline-block; width: 0.8em; height: 0.8em; margin-right: 0.35em; vertical-align: -0.05em; border-radius: 50%; }
+      .reveal .coax-legend .outer::before { background: #27333b; }
+      .reveal .coax-legend .shield::before { background: #8c979d; }
+      .reveal .coax-legend .insulation::before { background: #e8e4c7; }
+      .reveal .coax-legend .core::before { background: #bd6b2d; }
+      .reveal .fiber-layout { display: grid; grid-template-columns: minmax(260px, 0.8fr) 1.2fr; gap: 1.1em; align-items: center; }
+      .reveal .fiber-cross-section { position: relative; width: 250px; aspect-ratio: 1; margin: 0 auto 0.35em; border-radius: 50%; background: #293b46; }
+      .reveal .fiber-cross-section div { position: absolute; border-radius: 50%; display: grid; place-content: center; }
+      .reveal .fiber-cladding { inset: 13%; background: #c6e4e7; }
+      .reveal .fiber-core { inset: 37%; background: #f2be58; }
+      .reveal .fiber-legend { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.3em; font-size: 0.55em; text-align: center; }
+      .reveal .fiber-legend span::before { content: ''; display: inline-block; width: 0.8em; height: 0.8em; margin-right: 0.3em; vertical-align: -0.05em; border-radius: 50%; }
+      .reveal .fiber-legend .coating::before { background: #293b46; }
+      .reveal .fiber-legend .cladding::before { background: #c6e4e7; }
+      .reveal .fiber-legend .core::before { background: #f2be58; }
+      .reveal .network-scale { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.45em; align-items: end; max-width: 980px; min-height: 270px; margin: 0.75em auto 0; padding: 0 0.25em 0.45em; border-bottom: 3px solid var(--pt-blue); }
+      .reveal .network-scale > div { display: grid; place-content: center; text-align: center; padding: 0.35em; color: #fff; font-size: 0.64em; line-height: 1.15; }
+      .reveal .network-scale strong { color: inherit; font-size: 1.25em; }
+      .reveal .network-scale .pan { min-height: 3.4em; background: #007c91; }
+      .reveal .network-scale .lan { min-height: 5.1em; background: #0071a8; }
+      .reveal .network-scale .man { min-height: 6.8em; background: #4f7f3d; }
+      .reveal .network-scale .wan { min-height: 8.6em; background: #b35c2e; }
+      .reveal .p2p-diagram { display: grid; grid-template-columns: 1fr 2fr 1fr; gap: 0.45em; align-items: center; max-width: 860px; margin: 0.65em auto 0.85em; }
+      .reveal .p2p-node { display: grid; place-content: center; min-height: 3.2em; padding: 0.35em; border: 3px solid var(--pt-blue); background: #fff; color: var(--pt-blue); font-size: 0.6em; font-weight: 700; text-align: center; }
+      .reveal .p2p-link { position: relative; display: grid; place-content: center; min-height: 3.2em; color: #006779; font-size: 0.52em; font-weight: 700; text-align: center; }
+      .reveal .p2p-link::before { content: ''; position: absolute; left: 0; right: 0; top: 50%; border-top: 5px solid #007c91; }
+      .reveal .p2p-link span { position: relative; padding: 0.22em 0.45em; background: #fff; }
+      .reveal .bus-diagram { position: relative; max-width: 850px; height: 5.4em; margin: 0.35em auto 0.6em; }
+      .reveal .bus-title { position: absolute; z-index: 2; top: 0; left: 50%; padding: 0.18em 0.48em; transform: translateX(-50%); background: #fff; color: #006779; font-size: 0.54em; font-weight: 700; }
+      .reveal .bus-line { position: absolute; top: 53%; left: 6%; right: 6%; border-top: 6px solid #007c91; }
+      .reveal .bus-end { position: absolute; top: calc(53% - 0.62em); display: grid; place-content: center; width: 1.25em; height: 1.25em; background: #b35c2e; color: #fff; font-size: 0.48em; font-weight: 700; }
+      .reveal .bus-end.left-end { left: 3.5%; }.reveal .bus-end.right-end { right: 3.5%; }
+      .reveal .bus-station { position: absolute; top: calc(53% + 0.48em); display: grid; place-content: center; width: 2.25em; height: 2.25em; border: 3px solid var(--pt-blue); background: #fff; color: var(--pt-blue); font-size: 0.58em; font-weight: 700; transform: translateX(-50%); }
+      .reveal .bus-station::before { content: ''; position: absolute; left: 50%; bottom: 100%; height: 0.55em; border-left: 4px solid var(--pt-blue); }
+      .reveal .bus-station.station-one { left: 24%; }.reveal .bus-station.station-two { left: 50%; }.reveal .bus-station.station-three { left: 76%; }
+      .reveal .ring-diagram { position: relative; width: 8.4em; height: 6.5em; margin: 0.2em auto 0.5em; }
+      .reveal .ring-track { position: absolute; inset: 0.65em 1.25em; border: 6px solid #007c91; border-radius: 50%; }
+      .reveal .ring-node { position: absolute; z-index: 2; display: grid; place-content: center; width: 1.55em; height: 1.55em; border: 3px solid var(--pt-blue); border-radius: 50%; background: #fff; color: var(--pt-blue); font-size: 0.58em; font-weight: 700; }
+      .reveal .ring-node.node-a { top: 0; left: calc(50% - 0.78em); }.reveal .ring-node.node-b { top: calc(50% - 0.78em); right: 0; }.reveal .ring-node.node-c { bottom: 0; left: calc(50% - 0.78em); }.reveal .ring-node.node-d { top: calc(50% - 0.78em); left: 0; }
+      .reveal .ring-direction { position: absolute; z-index: 1; inset: 2.1em 2.2em; display: grid; place-content: center; color: #b35c2e; font-size: 1.05em; font-weight: 700; text-align: center; }
+      .reveal .ring-direction small { color: var(--pt-muted); font-size: 0.32em; font-weight: 400; white-space: nowrap; }
+      .reveal .double-ring-diagram { position: relative; width: 9.2em; height: 7.1em; margin: 0.2em auto 0.1em; }
+      .reveal .double-ring-track { position: absolute; border-radius: 50%; }.reveal .double-ring-track.outer { inset: 0.72em 1.3em; border: 5px solid #007c91; }.reveal .double-ring-track.inner { inset: 1.27em 1.85em; border: 5px solid #b35c2e; }
+      .reveal .double-ring-node { position: absolute; z-index: 3; display: grid; place-content: center; width: 1.6em; height: 1.6em; border: 3px solid var(--pt-blue); border-radius: 50%; background: #fff; color: var(--pt-blue); font-size: 0.58em; font-weight: 700; }
+      .reveal .double-ring-node.node-a { top: 0; left: calc(50% - 0.8em); }.reveal .double-ring-node.node-b { top: calc(50% - 0.8em); right: 0; }.reveal .double-ring-node.node-c { bottom: 0; left: calc(50% - 0.8em); }.reveal .double-ring-node.node-d { top: calc(50% - 0.8em); left: 0; }
+      .reveal .double-ring-direction { position: absolute; z-index: 2; display: grid; justify-items: center; color: var(--pt-blue); font-size: 0.95em; font-weight: 700; line-height: 0.8; }.reveal .double-ring-direction small { color: var(--pt-muted); font-size: 0.3em; font-weight: 400; white-space: nowrap; }
+      .reveal .double-ring-direction.clockwise { top: 2.05em; left: 2.55em; }.reveal .double-ring-direction.counterclockwise { top: 2.05em; right: 2.55em; color: #b35c2e; }
+      .reveal .double-ring-note { margin: 0.25em 0 0; color: var(--pt-muted); font-size: 0.56em; text-align: center; }
+      .reveal .star-diagram { position: relative; width: min(18em, 90%); height: 7.1em; margin: 0.45em auto 0; font-size: 0.72em; }
+      .reveal .star-host, .reveal .star-switch { position: absolute; z-index: 1; display: grid; place-items: center; box-sizing: border-box; min-width: 4.3em; min-height: 2.15em; padding: 0.38em 0.65em; border: 2px solid var(--pt-blue); border-radius: 7px; background: #fff; color: var(--pt-ink); font-weight: 700; line-height: 1.05; text-align: center; }
+      .reveal .star-switch { left: 50%; top: 42%; display: flex; flex-direction: column; justify-content: center; gap: 0.2em; min-width: 5.6em; min-height: 2.45em; transform: translate(-50%, -50%); border-color: #007c91; background: #e9f8fa; }
+      .reveal .star-switch small { display: block; margin-top: 0.18em; color: #006678; font-size: 0.62em; font-weight: 600; }
+      .reveal .star-host-a { left: 1%; top: 0; }.reveal .star-host-b { right: 1%; top: 0; }.reveal .star-host-c { left: 50%; bottom: 0; transform: translateX(-50%); }
+      .reveal .star-link { position: absolute; z-index: 0; height: 3px; transform-origin: left center; background: #007c91; }
+      .reveal .star-link-a { left: 24.5%; top: 23.5%; width: 3.15em; transform: rotate(35deg); }.reveal .star-link-b { left: 75.5%; top: 23.5%; width: 3.15em; transform: rotate(145deg); }.reveal .star-link-c { left: 50%; top: 53.5%; width: 1.35em; transform: rotate(90deg); }
+      .reveal .mesh-formula { max-width: 770px; margin: 0.8em auto 0.45em; padding: 0.55em 0.8em; border-top: 5px solid #007c91; background: #e9f8fa; text-align: center; }
+      .reveal .mesh-formula .formula { color: var(--pt-blue); font-family: Georgia, 'Times New Roman', serif; font-size: 1.8em; font-style: italic; font-weight: 700; line-height: 1; }
+      .reveal .mesh-formula .mesh-fraction { display: inline-flex; flex-direction: column; margin-left: 0.08em; vertical-align: middle; text-align: center; }
+      .reveal .mesh-formula .mesh-fraction i { display: block; border-bottom: 3px solid var(--pt-blue); padding: 0 0.12em 0.08em; }
+      .reveal .mesh-formula .mesh-fraction small { display: block; padding-top: 0.08em; font-size: 0.56em; }
+      .reveal .mesh-formula .formula-legend { display: flex; justify-content: center; gap: 1.3em; margin-top: 0.55em; color: var(--pt-muted); font-family: Arial, Helvetica, sans-serif; font-size: 0.43em; font-style: normal; }
+      .reveal .mesh-formula .formula-legend strong { margin-right: 0.22em; color: #007c91; }
+      .reveal .mesh-lab { grid-template-columns: minmax(230px, 1fr); max-width: 620px; margin: 0.5em auto 0; }.reveal .mesh-lab .lab-result { min-height: 0; text-align: center; }
+      .reveal .routing-path { display: grid; grid-template-columns: 1.25fr 0.45fr 0.9fr 0.45fr 1.25fr 0.45fr 0.9fr 0.45fr 1.25fr; gap: 0.12em; align-items: center; max-width: 1080px; margin: 0.9em auto 0.2em; }
+      .reveal .routing-network, .reveal .routing-router { display: grid; place-content: center; min-height: 3.3em; padding: 0.35em 0.25em; border: 3px solid var(--pt-blue); background: #fff; color: var(--pt-ink); font-size: 0.52em; line-height: 1.1; text-align: center; }
+      .reveal .routing-network { border-top-width: 7px; }.reveal .routing-network.source { border-top-color: #007c91; }.reveal .routing-network.transit { border-top-color: #b35c2e; }.reveal .routing-network.destination { border-top-color: #4f7f3d; }
+      .reveal .routing-router { border-color: #007c91; background: #e9f8fa; }.reveal .routing-network small, .reveal .routing-router small { margin-top: 0.22em; color: var(--pt-muted); font-size: 0.76em; font-weight: 600; }
+      .reveal .routing-arrow { display: grid; justify-items: center; color: #007c91; font-size: 1.05em; font-weight: 700; line-height: 0.8; }.reveal .routing-arrow small { margin-top: 0.2em; color: var(--pt-muted); font-size: 0.36em; font-weight: 600; }
+      .reveal .algorithm-demo { max-width: 1040px; margin: 0.35em auto 0; }.reveal .algorithm-demo svg { display: block; width: 100%; max-height: 42vh; margin: 0 auto; overflow: visible; }
+      .reveal .algo-edge line, .reveal .algo-edge path { fill: none; stroke: #9aa9b5; stroke-width: 3; }.reveal .algo-edge text { fill: #5b6b78; font-size: 17px; font-weight: 700; text-anchor: middle; }.reveal .algo-edge.active line, .reveal .algo-edge.active path { stroke: #007c91; stroke-width: 5; }.reveal .algo-edge.active text { fill: #007c91; }
+      .reveal .algo-node circle { fill: #fff; stroke: var(--pt-blue); stroke-width: 4; }.reveal .algo-node .node-name { fill: var(--pt-blue); font-size: 24px; font-weight: 700; text-anchor: middle; }.reveal .algo-node .node-distance { fill: #344b5d; font-size: 19px; font-weight: 700; text-anchor: middle; paint-order: stroke; stroke: #fff; stroke-width: 5px; }.reveal .algo-node.settled circle { fill: #e4f0e7; stroke: #4f7f3d; }.reveal .algo-node.current circle { fill: #e9f8fa; stroke: #007c91; stroke-width: 6; }
+      .reveal .algorithm-controls { display: flex; justify-content: center; align-items: center; gap: 0.8em; margin: 0.18em auto 0; }.reveal .algorithm-controls button { width: 2em; height: 2em; border: 2px solid var(--pt-blue); border-radius: 50%; background: #fff; color: var(--pt-blue); font-size: 0.58em; font-weight: 700; cursor: pointer; }.reveal .algorithm-controls button:hover { background: #e9f8fa; }.reveal .algorithm-controls strong { min-width: 14em; color: #006779; font-size: 0.54em; text-align: center; }
+      .reveal .algorithm-hint { margin: 0.2em 0 0; color: var(--pt-muted); font-size: 0.46em; text-align: center; }
+      .reveal .dijkstra-explanation, .reveal .flow-demo p, .reveal .dinic-demo p { max-width: 900px; margin: 0.3em auto 0; color: var(--pt-ink); font-size: 0.55em; line-height: 1.28; text-align: center; }
+      .reveal .flow-edge line { stroke: #7c8d99; stroke-width: 4; }.reveal .flow-edge text { fill: #53636f; font-size: 19px; font-weight: 700; paint-order: stroke; stroke: #fff; stroke-linejoin: round; stroke-width: 8px; text-anchor: middle; }.reveal .flow-edge.active line { stroke: #b35c2e; stroke-width: 7; }.reveal .flow-edge.active text { fill: #b35c2e; }.reveal .flow-edge.saturated line { stroke: #b54b4b; stroke-dasharray: 8 6; }.reveal .flow-edge.saturated text { fill: #b54b4b; }.reveal #flow-arrow path { fill: #7c8d99; }.reveal .flow-node circle { fill: #fff; stroke: var(--pt-blue); stroke-width: 4; }.reveal .flow-node text { fill: var(--pt-blue); font-size: 25px; font-weight: 700; text-anchor: middle; }.reveal .flow-node.source circle { fill: #e9f8fa; stroke: #007c91; }.reveal .flow-node.sink circle { fill: #f4e6d5; stroke: #b35c2e; }
+      .reveal .flow-lab { display: grid; grid-template-columns: minmax(0, 1.45fr) minmax(250px, 0.7fr); gap: 0.8em; align-items: center; }.reveal .flow-lab svg { max-height: 36vh; }
+      .reveal .flow-matrix-panel { padding: 0.5em; border-top: 6px solid #007c91; background: #edf5fa; color: var(--pt-ink); text-align: center; }.reveal .flow-matrix-panel > strong { display: block; color: var(--pt-blue); font-size: 0.52em; }.reveal .flow-matrix-panel > small { display: block; margin: 0.2em 0 0.45em; color: var(--pt-muted); font-size: 0.38em; }
+      .reveal .flow-matrix { width: 100%; border-collapse: collapse; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.42em; }.reveal .flow-matrix th, .reveal .flow-matrix td { width: 14%; padding: 0.28em 0.18em; border: 1px solid #b8cbd5; text-align: center; }.reveal .flow-matrix th { background: #d9e8ee; color: #006779; font-weight: 700; }.reveal .flow-matrix td.active { background: #f4e6d5; color: #8a421e; font-weight: 800; box-shadow: inset 0 0 0 2px #b35c2e; }.reveal .flow-matrix td.saturated { background: #f8e2e2; color: #a13e3e; font-weight: 800; text-decoration: line-through; }
+      .reveal .flow-total { min-height: 1.6em; margin: 0.22em auto 0; color: #8a421e; font-size: 0.54em; font-weight: 700; text-align: center; }.reveal .flow-total code { padding: 0.14em 0.35em; background: #f4e6d5; color: #8a421e; }
+      .reveal .level-band rect { fill: #edf5fa; stroke: #c8d8df; stroke-width: 2; }.reveal .level-band text { fill: #5b6b78; font-size: 15px; font-weight: 700; text-anchor: middle; }.reveal .dinic-edge line { stroke: #92a4af; stroke-width: 4; }.reveal .dinic-edge text { fill: #53636f; font-size: 18px; font-weight: 700; paint-order: stroke; stroke: #fff; stroke-linejoin: round; stroke-width: 8px; text-anchor: middle; }.reveal .dinic-edge.active line { stroke: #007c91; stroke-width: 6; }.reveal .dinic-edge.active text { fill: #007c91; }.reveal .dinic-edge.saturated line { stroke: #b54b4b; stroke-dasharray: 8 6; }.reveal .dinic-edge.saturated text { fill: #b54b4b; }.reveal #dinic-arrow path { fill: #7c8d99; }.reveal .dinic-node circle { fill: #fff; stroke: var(--pt-blue); stroke-width: 4; }.reveal .dinic-node text { fill: var(--pt-blue); font-size: 23px; font-weight: 700; text-anchor: middle; }
+      .reveal .dinic-demo svg { max-height: 32vh; }
+      @media (max-width: 800px) { .reveal .flow-lab { grid-template-columns: 1fr; }.reveal .flow-lab svg { max-height: 28vh; }.reveal .flow-matrix-panel { max-width: 420px; margin: 0 auto; } }
+      .reveal .comparison-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.65em 1em; margin: 0.55em auto; max-width: 1050px; }
+      .reveal .comparison-grid > div { border-left: 6px solid var(--pt-cyan); padding: 0.25em 0.55em; font-size: 0.72em; }
+      .reveal .comparison-grid strong { display: block; margin-bottom: 0.12em; }
+      .reveal .timeline { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.5em; align-items: end; margin: 1em auto 0; max-width: 1050px; border-bottom: 3px solid var(--pt-blue); }
+      .reveal .timeline > div { min-height: 8em; padding: 0.55em 0.35em; display: grid; align-content: center; background: #e7edf6; text-align: center; font-size: 0.65em; border-top: 6px solid var(--pt-cyan); }
+      .reveal .timeline > div:nth-child(2) { min-height: 9.2em; background: #dceef2; }
+      .reveal .timeline > div:nth-child(3) { min-height: 10.4em; background: #eff0df; }
+      .reveal .timeline > div:nth-child(4) { min-height: 11.6em; background: #f4e6d5; }
+      .reveal .wifi-speed-chart { display: grid; grid-template-columns: repeat(8, 1fr); gap: 0.45em; align-items: end; max-width: 1080px; height: 10em; margin: 0.3em auto 0; padding: 0 0.1em; border-bottom: 3px solid var(--pt-blue); }
+      .reveal .wifi-speed-chart > div { display: flex; flex-direction: column; justify-content: end; align-items: stretch; height: 100%; text-align: center; }
+      .reveal .wifi-speed-chart .rate { min-height: 1.45em; display: grid; place-content: end center; color: var(--pt-blue); font-size: 0.46em; font-weight: 700; }
+      .reveal .wifi-speed-chart .bar { height: var(--bar-height); min-height: 0.35em; background: var(--bar-color); border-top: 5px solid var(--bar-border); }
+      .reveal .wifi-speed-chart strong { margin-top: 0.35em; font-size: 0.45em; }
+      .reveal .wifi-speed-chart .year { color: var(--pt-muted); font-size: 0.4em; }
+      .reveal .future-standard { display: grid; grid-template-columns: auto 1fr; gap: 0.45em 0.7em; align-items: center; max-width: 1080px; margin: 0.48em auto 0; padding: 0.35em 0.55em; border-left: 5px dashed #587083; background: #eef3f7; font-size: 0.48em; }
+      .reveal .future-standard strong { white-space: nowrap; }
+      .reveal .wifi-standard-table { display: grid; grid-template-columns: 1.1fr 0.82fr 0.95fr 1.2fr 0.8fr; max-width: 1080px; margin: 0.4em auto 0; font-size: 0.47em; line-height: 1.15; border-top: 2px solid var(--pt-blue); border-left: 2px solid var(--pt-blue); }
+      .reveal .wifi-standard-table > div { display: grid; align-items: center; padding: 0.28em 0.36em; background: #f7fafc; border-right: 1px solid #aebbc5; border-bottom: 1px solid #aebbc5; }
+      .reveal .wifi-standard-table .head { background: var(--pt-blue); color: #fff; font-weight: 700; }
+      .reveal .wifi-standard-table .rate { justify-content: end; text-align: right; }
+      .reveal .protocol-map { display: grid; grid-template-columns: 1.2fr 1fr; gap: 0.4em 0.7em; max-width: 900px; margin: 0.6em auto; }
+      .reveal .protocol-map > div { padding: 0.4em 0.55em; background: #e7edf6; font-size: 0.72em; }
+      .reveal .protocol-map .head { background: var(--pt-blue); color: #fff; font-weight: 700; }
+      .reveal .media-gallery { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.7em; align-items: center; }
+      .reveal .media-gallery img { width: 100%; max-width: 100%; max-height: 48vh; margin: 0; }
+      .reveal .media-gallery figure { margin: 0; }
+      .reveal .media-gallery figcaption { margin-top: 0.25em; color: var(--pt-text); font-size: 0.46em; font-weight: 700; text-align: center; }
+      .reveal .media-gallery.four { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 900px; margin: 0.25em auto; }
+      .reveal .media-gallery.single-visual { grid-template-columns: 1fr; max-width: 1100px; margin: 0.25em auto; }
+      .reveal .media-gallery.single-visual img { max-height: 56vh; }
+      .reveal .media-gallery.csma-cd-gallery { grid-template-columns: 1fr; max-width: 920px; margin: 0.2em auto; }
+      .reveal .media-gallery.csma-cd-gallery img { max-height: 30vh; }
+      .reveal .slide-number { box-sizing: border-box; min-width: 4.8em; padding: 0.32em 0.58em; border: 2px solid var(--pt-blue); border-radius: 4px; background: rgba(255, 255, 255, 0.94); color: var(--pt-blue); font-family: Arial, Helvetica, sans-serif; font-size: 0.46em; font-weight: 700; letter-spacing: 0; line-height: 1.1; text-align: center; left: 18px; right: auto; bottom: 16px; }
+      .reveal .slide-number a { color: inherit; text-decoration: none; }
+      .reveal .controls { right: 18px; bottom: 18px; }
+      @media (max-width: 800px) { .reveal { font-size: 25px; } .reveal img { max-width: 94%; } .reveal .columns { grid-template-columns: 1fr; gap: 0; } }
+    </style>
+  </head>
+  <body>
+    <div class="reveal"><div class="slides">
+      <section data-markdown><textarea data-template>
+# Quality of Experience
+
+## Jak mierzyć jakość doświadczaną przez widza?
+
+Mikołaj Leszczuk
+
+<p class="small">Materiały źródłowe: Mikołaj Leszczuk, Zdzisław Papir, Lucjan Janowski, Jakub Nawała.</p>
+
+---
+
+## Plan wykładu
+
+1. Od parametrów sieci do doświadczenia widza
+2. Eksperymenty subiektywne i interpretacja ocen
+3. Wskaźniki automatyczne i modele jakości
+4. Zastosowania: od laboratorium po monitoring usług
+
+---
+
+## Dlaczego dostawca mierzy jakość?
+
+**OTT (Over-the-Top)** to dostarczanie usługi wideo przez internet niezależnie od operatora dostępu. Serwis OTT może oferować transmisje na żywo i materiały na żądanie.
+
+Dostawca usługi nie kontroluje całej drogi do odbiorcy. Widz może jednak zrezygnować z usługi, gdy odtwarzanie regularnie zawodzi.
+
+Konkurencja między dostawcami i zmieniające się sposoby korzystania z mediów sprawiają, że sam pomiar parametrów sieci nie wystarcza.
+
+---
+
+## Zanim wideo na żądanie stało się codziennością
+
+W 1994 r. Thomas Miki wiązał przetrwanie dostawców z wydajnością, niezawodnością i elastycznością. W 1995 r. Daniel Minoli opisywał rywalizację operatorów, sieci kablowych i dostawców internetu, wskazując wideo jako motor rozbudowy infrastruktury.
+
+---
+
+## Jak prognozowano wzrost ruchu wideo?
+
+<div class="columns"><div>
+
+Cisco w 2018 r. prognozowało na lata 2017-2022:
+
+- ok. trzykrotny wzrost całego ruchu IP,
+- udział wideo w ruchu IP na poziomie 82% w 2022 r.,
+- siedmiokrotny wzrost ruchu z monitoringu wideo.
+
+</div><div>
+
+![Wykres prognozy Cisco: ruch wideo w latach 2017 i 2022](source-media/image7.png)
+
+</div></div>
+
+<p class="small">To prognozy z raportu Cisco Visual Networking Index, nie pomiary z 2022 r.</p>
+
+---
+
+## Prognoza ruchu na użytkownika
+
+<div class="columns"><div>
+
+Cisco prognozowało wzrost z **28,8 GB** w 2017 r. do **84,6 GB miesięcznie** w 2022 r., czyli o ok. 194%.
+
+Wykres dotyczy całkowitego ruchu na użytkownika stacjonarnego internetu konsumenckiego, nie samego wysyłania.
+
+</div><div>
+
+![Wykres Cisco: prognozowany całkowity ruch miesięczny na użytkownika](source-media/image8.png)
+
+</div></div>
+
+---
+
+## Co umożliwia dostarczanie wideo?
+
+- **Dostęp do sieci:** łącza przewodowe i bezprzewodowe w domu, w pracy i w podróży.
+- **Kodowanie i adaptacja:** warianty materiału o różnych przepływnościach.
+- **CDN (Content Delivery Network):** rozproszona sieć dostarczania treści.
+
+Przepływność wysyłania jest ważna także dla transmisji tworzonych przez samych użytkowników.
+
+---
+
+## Technologie i miejsca odbioru
+
+| Obszar | Przykłady ze źródłowego wykładu |
+| :--- | :--- |
+| Sieć szkieletowa i dostęp | Zwielokrotnianie długości fal (WDM), gigabitowy Ethernet, sieci światłowodowe, kablowe i telefoniczne |
+| Dostęp lokalny | Wi-Fi, łączność przez przewody energetyczne (PLC), łączność ultraszerokopasmowa (UWB) |
+| Odbiorniki | Telewizory o różnej rozdzielczości, komputery i urządzenia mobilne |
+
+---
+
+## Co zmienia przepływność wysyłania?
+
+- Relacje i materiały tworzone przez odbiorców, w tym dziennikarstwo obywatelskie.
+- Współtworzenie encyklopedii i udostępnianie zdjęć.
+- Personalizacja treści oraz wstawianie reklam po stronie dostawcy to odrębne możliwości cyfrowego dostarczania mediów.
+
+---
+
+## QoS a QoE
+
+<div class="columns"><div>
+
+**QoS (Quality of Service)**
+
+Techniczna jakość usługi. Przykładowe miary sieciowe: przepływność, opóźnienie i utrata pakietów.
+
+</div><div>
+
+**QoE (Quality of Experience)**
+
+Jakość doświadczana przez użytkownika: na ile usługa spełnia jego oczekiwania w danej sytuacji.
+
+</div></div>
+
+Ten sam parametr może mieć inne znaczenie w wideorozmowie i w filmie odtwarzanym z bufora.
+
+---
+
+## Głos, wideo i dane: inne wymagania
+
+| Usługa | Co ma znaczenie? |
+| :--- | :--- |
+| Rozmowa | Niskie opóźnienie i małe wahania czasu dostarczania |
+| Strumień wideo | Przepływność pozwalająca uzupełniać bufor oraz mało przerw |
+| Pobieranie pliku | Czas zakończenia i poprawność danych |
+
+Przepływność, opóźnienie i straty warto analizować w odniesieniu do konkretnej usługi.
+
+---
+
+## Dwie definicje jakości doświadczanej
+
+<div class="columns"><div>
+
+**QUALINET**
+
+Stopień zadowolenia lub irytacji zależy od tego, jak usługa spełnia oczekiwania wobec użyteczności i satysfakcji, przy aktualnych preferencjach odbiorcy.
+
+</div><div>
+
+**Möller i Raake**
+
+Ocena dotyczy też potrzeb odbiorcy, przydatności lub przyjemności oraz kontekstu, cech osoby i jej aktualnego stanu.
+
+</div></div>
+
+<p class="small"><a href="https://doi.org/10.1007/978-3-319-02681-7">Quality of Experience: Advanced Concepts, Applications and Methods</a>.</p>
+
+---
+
+## Źródła definicji
+
+<div class="columns"><div>
+
+<img src="source-media/image10.png" alt="Logo sieci QUALINET" style="max-height:300px">
+
+</div><div>
+
+<img src="source-media/image11.png" alt="Okładka książki Quality of Experience pod redakcją Möllera i Raakego" style="max-height:340px">
+
+</div></div>
+
+<p class="small">W badaniach jakości wideo działa też Video Quality Experts Group (VQEG).</p>
+
+---
+
+## Od jakości sieci do jakości odbieranej
+
+<img src="source-media/image12.png" alt="Schemat rozróżnia jakość sieci transportowej, jakość usług transportowych oraz jakość doświadczaną po stronie klienta" style="max-height:415px">
+
+---
+
+## Co wchodzi do oceny usługi?
+
+<img src="source-media/image13.png" alt="Schemat wiąże QoE z parametrami QoS, warunkami korzystania z usługi oraz pięciostopniową skalą jakości" style="max-height:395px">
+
+<p class="small">Ilustracja pokazuje możliwą skalę ocen; sposób pomiaru zależy od zadania i projektu badania.</p>
+
+---
+
+## Co poza siecią wpływa na QoE?
+
+| Czynnik | Przykład |
+| :--- | :--- |
+| Treść | Ruch w kadrze, drobny tekst |
+| Dostarczanie | Czas startu, zmiany jakości, przerwy |
+| Użyteczność i interakcja | Napisy, wyszukiwanie, sterowanie odtwarzaczem |
+| Model biznesowy | Reklamy i oczekiwania wobec płatnej usługi |
+
+Liczą się też ekran, warunki oglądania i zadanie widza.
+
+---
+
+## Jakość na końcu łańcucha
+
+<div class="columns"><div>
+
+W środowisku OTT dostawcy rywalizują o odbiorcę. Żeby ustalić, czy problem może skłonić go do odejścia, trzeba wiedzieć, co faktycznie dotarło do jego urządzenia i jak zostało odtworzone.
+
+</div><div>
+
+![Przykład telewizora z interfejsem wideo na żądanie](source-media/image14.jpeg)
+
+<p class="small">VIA Gallery, <a href="https://commons.wikimedia.org/w/index.php?curid=38934022">Wikimedia Commons</a>, CC BY 2.0.</p>
+
+</div></div>
+
+---
+
+## Wideo: ostrość czy ciągłość?
+
+Ten sam film i ten sam spadek przepływności. Bufor pozwala przez chwilę odtwarzać film dalej.
+
+![Wariant A: odtwarzanie zatrzymuje się po wyczerpaniu bufora. Wariant B: odtwarzacz obniża rozdzielczość i gra dalej.](video-qoe.svg)
+
+Jeśli segment o niższej przepływności dotrze na czas, nie będzie przerwy. Co ważniejsze: płynność sceny czy czytelność tekstu?
+
+---
+
+## Skąd wiadomo, co przeszkadza?
+
+Przygotowujemy **eksperyment subiektywny**: uczestnicy oglądają próbki w ustalonych warunkach i oceniają ich jakość.
+
+Kontrolujemy treść, rodzaj zakłóceń i warunki oglądania. Oceny stanowią punkt odniesienia do porównań i kalibracji modeli.
+
+W działającej usłudze trudno zebrać oceny bez przerywania korzystania. Kontrolowany test pozwala oddzielić wpływ zakłócenia od sytuacji, w której widz używa usługi.
+
+---
+
+## Skąd dane do kalibracji?
+
+<div class="columns"><div>
+
+Potrzebne są oceny wielu treści, poziomów jakości i osób. Rozbudowane badania mogą zbierać setki lub tysiące ocen. Nie jest to uniwersalny próg.
+
+Warunki oglądania należy utrzymać porównywalne lub celowo uwzględnić ich zmianę w projekcie.
+
+</div><div>
+
+![Uczestnicy przy indywidualnych stanowiskach testowych](source-media/image15.jpeg)
+
+</div></div>
+
+---
+
+## Eksperyment jako pętla
+
+<img src="source-media/image26.png" alt="System podaje kontrolowaną sekwencję na ekran, uczestnik ogląda materiał i przekazuje opinię; pomiar może być porównany z oceną" style="max-height:390px">
+
+<p class="small">Opinia widza jest wynikiem eksperymentu. Wskaźnik automatyczny można z nią porównać.</p>
+
+---
+
+## Co kontrolujemy w teście?
+
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.5em;text-align:center">
+  <div><strong>Opinia</strong><br>Ocena widza</div>
+  <div><strong>Zniekształcenie</strong><br>Kontrolowany sygnał</div>
+  <div><strong>Zadanie</strong><br>Ustalony sposób użycia</div>
+</div>
+
+---
+
+## Od materiału źródłowego do ocen
+
+<div class="packet-layout" style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.7em;text-align:center">
+<div><strong>1. Źródło</strong><br>Scena bez badanej degradacji</div>
+<div><strong>2. Warunek</strong><br>Kodowanie, straty lub przerwy</div>
+<div><strong>3. Próbka</strong><br>Wideo po przetworzeniu</div>
+<div><strong>4. Oceny</strong><br>Odpowiedzi uczestników</div>
+</div>
+
+W dokumentacji spotkasz skróty **SRC** (materiał źródłowy), **HRC** (warunek przetwarzania) i **PVS** (przetworzona sekwencja wideo).
+
+---
+
+## Warunki odsłuchu i oglądania
+
+- Ustalić parametry ekranu, odległość, oświetlenie i głośność.
+- Przygotować różne treści i reprezentatywne poziomy jakości.
+- Ujednolić instrukcję i trening; zaplanować kolejność próbek.
+
+Wynik odpowiada zadaniu i warunkom testu. Ocena czytelności tablicy rejestracyjnej to inne zadanie niż ocena komfortu oglądania filmu.
+
+---
+
+## Stanowisko do testów wideo
+
+<img src="laboratorium-agh.jpg" alt="Stanowisko testowe AGH: ekran, komputer i miejsce dla uczestnika" style="max-height:350px">
+
+<p class="small">Archiwalne stanowisko AGH. Stałe ustawienie ekranu i miejsca uczestnika ułatwia porównywanie ocen.</p>
+
+---
+
+## Laboratorium QoE AGH: infrastruktura
+
+<div class="columns"><div>
+
+<img src="source-media/image16.jpg" alt="Archiwalne zdjęcie budynku AGH, w którym prowadzono badania jakości" style="max-height:310px">
+
+</div><div>
+
+<img src="source-media/image17.jpg" alt="Archiwalna fotografia elewacji budynku z laboratorium QoE" style="max-height:310px">
+
+</div></div>
+
+---
+
+## Laboratorium QoE AGH: wnętrze i plan
+
+<div class="columns"><div>
+
+<img src="source-media/image18.png" alt="Wnętrze laboratorium: monitory, słuchawki i stanowiska komputerowe" style="max-height:350px">
+
+</div><div>
+
+<img src="source-media/image19.png" alt="Plan pomieszczenia do badań multimediów" style="max-height:350px">
+
+</div></div>
+
+---
+
+## ACR: ocena pojedynczej próbki
+
+**ACR (Absolute Category Rating):** każdą próbkę ocenia się oddzielnie na skali kategorii.
+
+| Wartość | 1 | 2 | 3 | 4 | 5 |
+| :--- | :--- | :--- | :--- | :--- | :--- |
+| Jakość | Zła | Słaba | Dostateczna | Dobra | Doskonała |
+
+Sesja treningowa oswaja uczestników z zadaniem. Właściwe oceny zbiera się osobno.
+
+---
+
+## ACR: kolejność w sesji
+
+<img src="source-media/image27.png" alt="Oś sesji ACR: kolejne próbki wideo, po każdej czas na oddanie oceny" style="max-height:330px">
+
+Uczestnik ocenia każdą próbkę po zakończeniu odtwarzania, przed pokazaniem następnej.
+
+---
+
+## MOS: średnia z ocen
+
+**MOS (Mean Opinion Score)** to średnia ocen zebranych dla danej próbki lub warunku.
+
+Przykład: **3, 4, 4, 5, 4** daje **MOS = 4,0**.
+
+Ta sama średnia może wynikać z bardzo różnych rozkładów. Warto pokazać też liczebność próby, rozrzut lub przedział ufności.
+
+---
+
+## Średnia, mediana i dominanta
+
+<div class="columns"><div>
+
+Średnie można liczyć dla próbki, warunku przetwarzania lub uczestnika, ale każda z nich odpowiada na inne pytanie.
+
+Mediana to wartość środkowa, dominanta to wartość najczęstsza. W rozkładach skośnych mogą różnić się od średniej.
+
+</div><div>
+
+![Krzywe rozkładów z oznaczoną średnią, medianą i dominantą](source-media/image28.png)
+
+<p class="small">Cmglee, <a href="https://commons.wikimedia.org/w/index.php?curid=15147460">Wikimedia Commons</a>, CC BY-SA 3.0.</p>
+
+</div></div>
+
+---
+
+## Czy przerwa przeszkadza jednakowo?
+
+Ci sami widzowie oceniają dwie sceny: każdą bez przerwy i z przerwą.
+
+| Przykładowy MOS | Bez przerwy | Z przerwą |
+| :--- | ---: | ---: |
+| Scena spokojna | 4,4 | 3,8 |
+| Scena dynamiczna | 4,4 | 3,0 |
+
+W przykładzie spadek średniej jest większy dla sceny dynamicznej. Czy da się to uogólnić? Potrzebujemy więcej treści oraz różnic ocen poszczególnych widzów.
+
+---
+
+## Porównywanie wyników
+
+Uczestnicy różnie korzystają ze skali. Zanim porównasz średnie, obejrzyj rozkład ocen i sprawdź, czy oceny są sparowane.
+
+**Test t-Studenta** może służyć do porównania średnich, gdy odpowiada projektowi badania i spełnione są jego założenia. Sama istotność statystyczna nie mówi, czy różnica jest praktycznie ważna.
+
+---
+
+## Rozkład ocen a test t
+
+<div class="columns"><div>
+
+Uczestnicy nie zawsze wykorzystują całą skalę. Przy tych samych widzach porównujemy **różnice sparowane**, np. ocenę wersji źródłowej i przetworzonej.
+
+Normalny kształt rozkładu wszystkich ocen razem nie sprawdza założeń tego testu.
+
+</div><div>
+
+![Różne kształty rozkładu normalnego zależne od średniej i wariancji](source-media/image29.png)
+
+</div></div>
+
+---
+
+## Czy różnica jest odróżnialna od zera?
+
+Na przykład: czy widzowie oceniają próbkę na granicy akceptacji inaczej niż źródło? W teście sparowanym sprawdzamy średnią różnicę ocen dla tych samych osób.
+
+---
+
+## Zależność nie musi być liniowa
+
+Niewielka poprawa parametru może być niezauważalna przy bardzo dobrej jakości, a wyraźnie odczuwalna w pobliżu progu akceptacji.
+
+**Krzywa logistyczna** to jeden ze sposobów dopasowania takiej zależności. Parametry wyznacza się z ocen, a model sprawdza na innych danych.
+
+---
+
+## Krzywa logistyczna: co zmienia jej kształt?
+
+<div class="columns"><div>
+
+<p class="small"><code>f(x) = a + (L - a) / (1 + exp(-k(x - x₀)))</code></p>
+
+- `a`, `L`: dolna i górna asymptota
+- `x₀`: położenie środka przejścia
+- `k > 0`: stromość wzrostu
+
+<p class="small"><code>exp</code> oznacza funkcję wykładniczą.</p>
+
+</div><div>
+
+![Wykres funkcji logistycznej w kształcie litery S](source-media/image33.png)
+
+<p class="small">Qef, <a href="https://commons.wikimedia.org/w/index.php?curid=4310325">Wikimedia Commons</a>, domena publiczna.</p>
+
+</div></div>
+
+---
+
+## Pułapki eksperymentu
+
+- Jedna irytująca próbka może zmienić sposób oceniania kolejnych.
+- Zmęczenie i kolejność prezentacji mogą wpłynąć na wynik.
+- Obserwacji odstających nie usuwa się tylko dlatego, że są niewygodne. Reguły wykluczeń ustala się z góry.
+
+Uczestnik może w praktyce ocenić całe doświadczenie udziału, a nie bieżącą próbkę. Dlatego projekt, instrukcja i ograniczenia eksperymentu wpływają na interpretację wyniku.
+
+---
+
+## Co może zmienić odpowiedź widza?
+
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.4em;text-align:center;font-size:0.8em">
+  <div><strong>Przygotowanie</strong><br>Spójna instrukcja i trening</div>
+  <div><strong>Zakłócenia</strong><br>Ocena całej sesji zamiast próbki</div>
+  <div><strong>Uczestnik</strong><br>Różne sposoby korzystania ze skali</div>
+  <div><strong>Laboratorium</strong><br>Wynik zależy od warunków badania</div>
+</div>
+
+---
+
+## Jak rozpoznać obserwację odstającą?
+
+<div class="columns"><div>
+
+Punkt oddalony od grupy to sygnał do sprawdzenia, nie powód do automatycznego usunięcia.
+
+Korelacja Pearsona bywa miarą zgodności ocen. Pokazany w archiwum próg 0,75 nie jest ogólną regułą wykluczania uczestników.
+
+</div><div>
+
+![Dwie grupy punktów i dwa przykładowe punkty odstające](source-media/image35.png)
+
+<p class="small">Osrecki, <a href="https://commons.wikimedia.org/w/index.php?curid=48650484">Wikimedia Commons</a>, CC BY-SA 4.0.</p>
+
+</div></div>
+
+---
+
+## Po co automatyczny pomiar?
+
+Test z udziałem ludzi pomaga zrozumieć odbiór, ale nie da się go uruchamiać dla każdej sesji.
+
+**KPI (Key Performance Indicators)** to kluczowe wskaźniki monitorowania. Przykłady: czas startu, liczba i czas przerw oraz wskaźniki zniekształceń obrazu.
+
+---
+
+## Zalety pomiaru algorytmicznego
+
+Pomiar można powtarzać według jednej procedury. Wynik jest liczbowy, łatwy do przetwarzania i da się go włączyć do systemu monitorowania.
+
+---
+
+## Gdzie powstaje zniekształcenie?
+
+| Etap | Przykład problemu |
+| :--- | :--- |
+| Rejestracja | Nieostrość lub szum |
+| Przetwarzanie | Artefakty kompresji |
+| Dostarczanie i odtwarzanie | Braki danych lub przerwy |
+| Wyświetlanie | Skalowanie i ograniczenia ekranu |
+
+Automatyczny wskaźnik może wykryć objaw. Nie zawsze pozwala wskazać etap, na którym powstał problem.
+
+---
+
+## Obraz kontrolny
+
+<img src="source-media/image46.png" alt="Plansza testowa z polami barwnymi, liniami i wzorcami ostrości" style="max-height:350px">
+
+Stały wzorzec pozwala porównać to, co dzieje się z kolorem, detalem i geometrią na różnych etapach toru.
+
+---
+
+## Ile wiemy o oryginale?
+
+| Metoda | Dane potrzebne do oceny |
+| :--- | :--- |
+| Pełna referencja | Oryginał i oceniane wideo |
+| Ograniczona referencja | Wybrane cechy oryginału i oceniany materiał |
+| Bez referencji | Tylko oceniany materiał, bez oryginału |
+
+Można też analizować **strumień bitowy** zamiast obrazu po dekodowaniu, jeśli dostępne są odpowiednie dane zakodowanego wideo.
+
+---
+
+## Pomiar bez referencji
+
+Sondę można umieścić tam, gdzie dostępny jest obraz, nawet bez dostępu do źródła oraz parametrów kodowania i transmisji.
+
+Trudność: model ma opisać to, co zauważa ludzki układ wzrokowy, bez bezpośredniego porównania z oryginałem.
+
+---
+
+## Pomiar z pełną referencją
+
+<div class="columns"><div>
+
+Przy dostępie do źródła można porównać je z przetworzonym obrazem. To przydatne np. przy sprawdzaniu skutków kompresji przez dostawcę treści.
+
+Koszt zależy od metody. Porównanie może wymagać dopasowania klatek i znacznych obliczeń.
+
+</div><div>
+
+![Przykład porównania tej samej sceny przed przetworzeniem i po przetworzeniu](source-media/image48.png)
+
+</div></div>
+
+---
+
+## Przykład: pomiar rozmycia
+
+**VQI (Video Quality Indicator)** może oszacować widoczne rozmycie na podstawie cech obrazu, np. tego, jak szerokie jest przejście na krawędzi.
+
+Bez oryginału nie wiadomo jednak, czy miękka krawędź wynika z usterki, czy była zamierzona. Pojedynczy wskaźnik nie zastępuje oceny całej usługi.
+
+---
+
+## Jak wskaźnik widzi rozmycie?
+
+<img src="blur-vqi.jpg" alt="Algorytm Sobela wskazuje krawędzie. Średnia ich zmierzonych szerokości jest wskaźnikiem rozmycia." style="max-height:350px">
+
+<p class="small">Przykład z materiałów AGH: wykrycie krawędzi filtrem Sobela, pomiar ich szerokości i uśrednienie wyników.</p>
+
+---
+
+## Jak powstaje model jakości?
+
+1. Zbierz oceny widzów oraz dane o sygnale i odtwarzaniu.
+2. Wybierz cechy i dopasuj model do ocen z eksperymentu.
+3. Sprawdź przewidywania na innych treściach i zakłóceniach.
+
+Model przewiduje **to, co oceniano w testach**. Jeśli uczestnicy oceniali obraz, wynik nie obejmuje np. użyteczności odtwarzacza ani reakcji na reklamy.
+
+---
+
+## Co wchodzi do modelu i co z niego wychodzi?
+
+<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:0.75em;text-align:center;font-size:0.86em">
+  <div><strong>Dane wejściowe</strong><br>Parametry sieci i cechy pikseli</div>
+  <div><strong>Model jakości</strong><br>Kalibracja na ocenach widzów</div>
+  <div><strong>Wynik</strong><br>Przewidywana ocena jakości</div>
+</div>
+
+Nie każdy model wykorzystuje wszystkie wejścia. Dobieramy je do tego, co możemy zmierzyć i przewidywać.
+
+---
+
+## Od badań AGH do zastosowań
+
+Archiwalne materiały AGH opisują zestaw **15 wskaźników jakości wideo zaimplementowanych w C**, w tym wskaźnik rozmycia, oraz prace nad pomiarem bez materiału odniesienia.
+
+Zastosowania: diagnostyka usług wideo, porównywanie ustawień kompresji, ocena materiału do konkretnych zadań oraz transfer narzędzi do praktyki.
+
+---
+
+## Jak rozwijano metody na AGH?
+
+Zespół przygotowywał eksperymenty zgodnie ze standardami, proponował własne metody badań i analizy wyników oraz przeprowadził liczne testy. Z błędów popełnionych przy testach wyciągał wnioski na przyszłość.
+
+<img src="source-media/image49.png" alt="Archiwalny widok strony AGH z narzędziami i wskaźnikami jakości obrazu" style="max-height:265px">
+
+<p class="small">Zrzut strony ma charakter historyczny. Nie potwierdza dzisiejszej dostępności plików.</p>
+
+---
+
+## Projekty: instytucje widoczne w archiwum
+
+<div style="display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:0.45em;align-items:center">
+  <img src="source-media/image51.png" alt="Komisja Europejska" style="height:90px">
+  <img src="source-media/image52.png" alt="Znak widoczny na archiwalnym slajdzie projektów" style="height:90px">
+  <img src="source-media/image53.jpg" alt="Narodowe Centrum Badań i Rozwoju" style="height:90px">
+  <img src="source-media/image54.png" alt="Orange" style="height:90px">
+  <img src="source-media/image55.png" alt="T-Mobile" style="height:90px">
+  <img src="source-media/image56.jpg" alt="Ministerstwo Nauki i Szkolnictwa Wyższego" style="height:90px">
+  <img src="source-media/image57.jpg" alt="Video Quality Experts Group" style="height:90px">
+</div>
+
+<p class="small">Zestaw historyczny z wykładu PT. Nie jest listą obecnych partnerstw.</p>
+
+---
+
+## Współpraca międzynarodowa: ocena wideo
+
+<div class="columns"><div>
+
+**VQEG (Video Quality Experts Group).** Materiały dokumentują udział od 2008 r., pracę w zarządzie, współprowadzenie projektów z partnerami z Gandawy, Nantes, Rohde & Schwarz i amerykańskiej NTIA oraz współpracę przy przygotowaniu testów.
+
+</div><div>
+
+**Video Quality in Public Safety.** Materiały odnotowują udział od 2010 r. w inicjatywie wspieranej przez amerykański Departament Bezpieczeństwa Krajowego, m.in. w opracowaniu poradników do zastosowań wideo.
+
+</div></div>
+
+---
+
+## Organizacje zajmujące się oceną wideo
+
+<div class="columns"><div>
+
+![Logo Video Quality Experts Group](source-media/image57.jpg)
+
+</div><div>
+
+![Logo Video Quality in Public Safety](source-media/image58.png)
+
+</div></div>
+
+---
+
+## Współpraca: standaryzacja i delegacja
+
+<div class="columns"><div>
+
+**Ministerstwo Cyfryzacji**
+
+<img src="source-media/image59.jpg" alt="Historyczne logo Ministerstwa Cyfryzacji" style="max-height:130px">
+
+<p class="small">Materiały odnotowują nominację do reprezentowania Polski od 2014 r.</p>
+
+</div><div>
+
+**Międzynarodowy Związek Telekomunikacyjny**
+
+<img src="source-media/image60.png" alt="Logo ITU" style="max-height:130px">
+
+<p class="small">Materiały dokumentują udział zespołu w pracach ITU-T od 2014 r.</p>
+
+</div></div>
+
+---
+
+## Współpraca i standaryzacja
+
+- **VQEG (Video Quality Experts Group):** wspólne badania i porównania metod oceny wideo.
+- **ITU-T:** sektor normalizacji Międzynarodowego Związku Telekomunikacyjnego.
+- **P.912:** subiektywna ocena wideo w zadaniach rozpoznawania.
+- **J.343:** hybrydowe modele oceny percepcyjnej łączące informacje ze strumienia bitowego i przetworzonego wideo.
+
+---
+
+## Przykłady wkładu w zalecenia
+
+**P.912:** rozszerzenie opisu materiałów źródłowych, metod testu, projektu eksperymentu oraz warunków odniesienia, oglądania i odsłuchu.
+
+**J.343:** wyniki techniczne przedstawione w pracach niezależnej grupy laboratoriów, z angielskiego *Independent Lab Group* (ILG).
+
+---
+
+## Transfer technologii i upowszechnianie
+
+W materiałach odnotowano podpisanie umowy licencyjnej w 2013 r. oraz prace nad kolejną. Nie ma tam potwierdzenia, że drugą umowę zawarto.
+
+Archiwalny bilans zespołu: blisko 100 publikacji i 100 wystąpień, ponad 10 konferencji lub sesji specjalnych oraz ponad 10 numerów specjalnych czasopism związanych z QoE. Liczby dotyczą okresu opisywanego w źródle.
+
+<img src="source-media/image61.jpg" alt="Archiwalny znak Centrum Transferu Technologii" style="max-height:100px">
+
+---
+
+## Od wyniku do decyzji
+
+Widzowie zgłaszają, że film się zacina, choć średnia przepływność wygląda dobrze.
+
+**Co sprawdzić?** Czas i miejsca przerw, poziom bufora oraz zmiany wariantu. Następnie porównać dwa ustawienia odtwarzacza na tych samych treściach i z udziałem widzów.
+
+---
+
+## Trzy pytania o jakość
+
+1. **Co zmierzyliśmy?** Parametry sieci, sygnału czy sesji odtwarzania?
+2. **Co odczuł widz?** Czy usługa pozwoliła wykonać zadanie?
+3. **Na czym opiera się wniosek?** Na ocenach ludzi czy na modelu skalibrowanym względem tych ocen?
+
+---
+
+## Nagranie źródłowego wykładu
+
+<p class="video-intro">Wersja angielska z AMIPaC (19:18). Osobny materiał do odtworzenia, bez powtarzania części wykładowej.</p>
+
+<video controls playsinline preload="metadata" style="max-height:370px"><source src="media/local-replacements/qoe-wyklad.mp4" type="video/mp4" onerror="this.parentElement.hidden=true;this.parentElement.nextElementSibling.hidden=false"></video>
+<p class="video-original" hidden>Brak lokalnej kopii nagrania. Źródłowy plik MP4 jest w materiałach AMIPaC do wykładu Multimedia Quality of Experience.</p>
+      </textarea></section>
+    </div></div>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/dist/reveal.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/reveal.js@5.2.1/plugin/markdown/markdown.js"></script>
+    <script>
+      Reveal.initialize({ hash: true, slideNumber: 'c/t', controlsTutorial: false, transition: 'fade', transitionSpeed: 'fast', plugins: [RevealMarkdown] });
+
+      const binary = (value) => value.replace(/[^01]/g, '');
+      const setHammingResult = () => {
+        const x = document.querySelector('.hamming-x');
+        const y = document.querySelector('.hamming-y');
+        const output = document.querySelector('.hamming-result');
+        if (!x || !y || !output) return;
+        x.value = binary(x.value); y.value = binary(y.value);
+        if (!x.value || !y.value || x.value.length !== y.value.length) {
+          output.textContent = 'Wpisz dwa niepuste ciągi binarne o tej samej długości.';
+          return;
+        }
+        const differences = [...x.value].map((bit, index) => bit === y.value[index] ? null : index + 1).filter(Boolean);
+        output.innerHTML = 'Odległość Hamminga: <code>' + differences.length + '</code>. Różne pozycje: <code>' + (differences.join(', ') || 'brak') + '</code>.';
+      };
+
+      const twoOfFive = ['00110', '10001', '01001', '11000', '00101', '10100', '01100', '00011', '10010', '01010'];
+      const setTwoOfFiveResult = () => {
+        const input = document.querySelector('.two-of-five-digit');
+        const output = document.querySelector('.two-of-five-result');
+        if (!input || !output) return;
+        const digit = Math.max(0, Math.min(9, Math.trunc(Number(input.value) || 0)));
+        input.value = digit;
+        const word = twoOfFive[digit];
+        output.innerHTML = 'Cyfra <code>' + digit + '</code> → słowo <code>' + word + '</code>. Liczba jedynek: <code>2</code>.';
+      };
+
+      const setTwoOfFiveCheckResult = () => {
+        const input = document.querySelector('.two-of-five-word');
+        const output = document.querySelector('.two-of-five-check-result');
+        if (!input || !output) return;
+        input.value = binary(input.value).slice(0, 5);
+        if (input.value.length !== 5) {
+          output.textContent = 'Wpisz dokładnie pięć bitów.';
+          return;
+        }
+        const weight = [...input.value].filter((bit) => bit === '1').length;
+        const digit = twoOfFive.indexOf(input.value);
+        if (digit >= 0) {
+          output.innerHTML = 'Waga słowa: <code>' + weight + '</code>. Poprawne słowo kodowe cyfry <code>' + digit + '</code>.';
+        } else {
+          output.innerHTML = 'Waga słowa: <code>' + weight + '</code>. To nie jest słowo kodowe cyfr w użytej tablicy „2 z 5”.';
+        }
+      };
+
+      const setHdb3Result = () => {
+        const input = document.querySelector('.hdb3-input');
+        const output = document.querySelector('.hdb3-result');
+        if (!input || !output) return;
+        input.value = binary(input.value);
+        if (!input.value) {
+          output.textContent = 'Wpisz co najmniej jeden bit.';
+          return;
+        }
+        let lastPolarity = -1;
+        let pulsesSinceViolation = 0;
+        let zeroRun = 0;
+        const encoded = [];
+        for (const character of input.value) {
+          if (character === '1') {
+            lastPolarity *= -1;
+            encoded.push((lastPolarity > 0 ? '+' : '−') + '1');
+            pulsesSinceViolation += 1;
+            zeroRun = 0;
+            continue;
+          }
+          encoded.push('0');
+          zeroRun += 1;
+          if (zeroRun !== 4) continue;
+          if (pulsesSinceViolation % 2 === 0) {
+            const polarity = -lastPolarity;
+            lastPolarity = polarity;
+            const mark = polarity > 0 ? '+' : '−';
+            encoded.splice(-4, 4, mark + 'B', '0', '0', mark + 'V');
+          } else {
+            const mark = lastPolarity > 0 ? '+' : '−';
+            encoded.splice(-4, 4, '0', '0', '0', mark + 'V');
+          }
+          pulsesSinceViolation = 0;
+          zeroRun = 0;
+        }
+        output.innerHTML = 'Zakodowany przebieg: <code>' + encoded.join(' ') + '</code><br><span><code>B00V</code> lub <code>000V</code> zastępuje serię czterech zer.</span>';
+      };
+
+      const setConvolutionalResult = () => {
+        const input = document.querySelector('.convolutional-input');
+        const output = document.querySelector('.convolutional-result');
+        if (!input || !output) return;
+        input.value = binary(input.value);
+        if (!input.value) {
+          output.textContent = 'Wpisz co najmniej jeden bit wejściowy.';
+          return;
+        }
+        let memory1 = 0;
+        let memory2 = 0;
+        const pairs = [];
+        const states = [];
+        for (const character of input.value) {
+          const bit = Number(character);
+          const c1 = bit ^ memory1 ^ memory2;
+          const c2 = bit ^ memory2;
+          pairs.push('' + c1 + c2);
+          states.push('[' + bit + ',' + memory1 + ',' + memory2 + ']');
+          memory2 = memory1;
+          memory1 = bit;
+        }
+        output.innerHTML = 'Pary wyjściowe: <code>' + pairs.join(' ') + '</code><br>Stany [bieżący, pamięć 1, pamięć 2]: <code>' + states.join(' ') + '</code>.';
+      };
+
+      const setMeshResult = () => {
+        const input = document.querySelector('.mesh-nodes');
+        const output = document.querySelector('.mesh-result');
+        if (!input || !output) return;
+        const raw = input.value.trim();
+        if (!raw) {
+          output.textContent = 'Wpisz liczbę węzłów od 2 do 1000.';
+          return;
+        }
+        const nodes = Number(raw);
+        if (!Number.isInteger(nodes) || nodes < 2 || nodes > 1000) {
+          output.textContent = 'Podaj liczbę całkowitą od 2 do 1000.';
+          return;
+        }
+        const links = nodes * (nodes - 1) / 2;
+        output.innerHTML = '<code>c = ' + nodes + ' × ' + (nodes - 1) + ' / 2 = ' + links + '</code><br>Dla <strong>' + nodes + ' węzłów</strong> pełna siatka potrzebuje <strong>' + links + ' łączy</strong>.';
+      };
+
+      const dijkstraSteps = [
+        { caption: 'Inicjalizacja', current: 's', settled: ['s'], active: [], distances: { s: '0', a: '∞', d: '∞', c: '∞', b: '∞', t: '∞' }, explanation: 'Startujemy w <strong>s</strong>: jego odległość jest równa 0, pozostałe wierzchołki mają odległość nieskończoną.' },
+        { caption: 'Iteracja 1: relaksacja z s', current: 'd', settled: ['s'], active: ['sa', 'sd'], distances: { s: '0', a: '15', d: '9', c: '∞', b: '∞', t: '∞' }, explanation: 'Z <strong>s</strong> docieramy do <strong>d</strong> kosztem 9 i do <strong>a</strong> kosztem 15. Najmniejszą etykietę tymczasową ma d.' },
+        { caption: 'Iteracja 2: wybór d', current: 'c', settled: ['s', 'd'], active: ['da', 'dc'], distances: { s: '0', a: '13', d: '9', c: '11', b: '∞', t: '∞' }, explanation: 'Ustalamy <strong>d = 9</strong>. Droga przez d poprawia koszt do a z 15 na 13 i daje <strong>c = 11</strong>.' },
+        { caption: 'Iteracja 3: wybór c', current: 'a', settled: ['s', 'd', 'c'], active: ['ca', 'ct'], distances: { s: '0', a: '13', d: '9', c: '11', b: '∞', t: '18' }, explanation: 'Ustalamy <strong>c = 11</strong>. Łuk c → t daje 18; c → a daje 14, więc nie poprawia znanego kosztu a = 13.' },
+        { caption: 'Iteracja 4: wybór a', current: 't', settled: ['s', 'd', 'c', 'a'], active: ['ab'], distances: { s: '0', a: '13', d: '9', c: '11', b: '48', t: '18' }, explanation: 'Ustalamy <strong>a = 13</strong>. Łuk a → b daje b = 48. Następną najmniejszą etykietę ma t = 18.' },
+        { caption: 'Iteracja 5: dojście do t', current: 't', settled: ['s', 'd', 'c', 'a', 't'], active: ['sd', 'dc', 'ct'], distances: { s: '0', a: '13', d: '9', c: '11', b: '48', t: '18' }, explanation: 'Ustalamy <strong>t = 18</strong>. Najkrótsza droga w oryginalnym przykładzie to <code>s → d → c → t</code>, o koszcie 9 + 2 + 7.' }
+      ];
+      let dijkstraStep = 0;
+      const setDijkstraStep = (index) => {
+        const demo = document.querySelector('.dijkstra-demo');
+        if (!demo) return;
+        dijkstraStep = Math.max(0, Math.min(dijkstraSteps.length - 1, index));
+        const step = dijkstraSteps[dijkstraStep];
+        demo.querySelectorAll('.algo-node').forEach((node) => {
+          const id = node.dataset.node;
+          node.classList.toggle('settled', step.settled.includes(id));
+          node.classList.toggle('current', step.current === id);
+          node.querySelector('.node-distance').textContent = step.distances[id];
+        });
+        demo.querySelectorAll('.algo-edge').forEach((edge) => edge.classList.toggle('active', step.active.includes(edge.dataset.edge)));
+        demo.querySelector('.dijkstra-caption').textContent = step.caption;
+        demo.querySelector('.dijkstra-explanation').innerHTML = step.explanation;
+      };
+
+      const flowCapacities = { sa: 3, sc: 5, ca: 3, ab: 2, ad: 7, at: 2, cd: 1, dt: 4 };
+      const flowSteps = [
+        { caption: 'Stan początkowy', active: [], total: '', capacities: flowCapacities, explanation: 'Liczby przy łukach i w macierzy oznaczają <strong>pozostałe pojemności</strong>: maksymalną ilość przepływu, którą można jeszcze przesłać daną krawędzią.' },
+        { caption: 'Ścieżka 1: s → a → d → t', active: ['sa', 'ad', 'dt'], total: '', capacities: flowCapacities, explanation: 'Pierwsza znaleziona ścieżka powiększająca prowadzi przez <code>s → a → d → t</code>. Jej wąskie gardło to s → a o pojemności 3.' },
+        { caption: 'Po wysłaniu 3 jednostek', active: ['sa', 'ad', 'dt'], total: '<code>Łączny przepływ: 3</code>', capacities: { sa: 0, sc: 5, ca: 3, ab: 2, ad: 4, at: 2, cd: 1, dt: 1 }, explanation: 'Odejmujemy 3 od pojemności łuków pierwszej ścieżki. Łuk s → a jest nasycony; łuk d → t ma jeszcze pojemność 1.' },
+        { caption: 'Ścieżka 2: s → c → d → t', active: ['sc', 'cd', 'dt'], total: '<code>Dotychczas: 3</code>', capacities: { sa: 0, sc: 5, ca: 3, ab: 2, ad: 4, at: 2, cd: 1, dt: 1 }, explanation: 'Po powrocie do źródła wybieramy <code>s → c → d → t</code>. Najmniejsza wolna pojemność na tej drodze to 1.' },
+        { caption: 'Po wysłaniu 1 jednostki', active: ['sc', 'cd', 'dt'], total: '<code>3 + 1 = 4</code>', capacities: { sa: 0, sc: 4, ca: 3, ab: 2, ad: 4, at: 2, cd: 0, dt: 0 }, explanation: 'Łuki c → d oraz d → t są nasycone, ale w sieci pozostaje inna droga do t.' },
+        { caption: 'Ścieżka 3: s → c → a → t', active: ['sc', 'ca', 'at'], total: '<code>Dotychczas: 4</code>', capacities: { sa: 0, sc: 4, ca: 3, ab: 2, ad: 4, at: 2, cd: 0, dt: 0 }, explanation: 'Wracamy do s i wybieramy <code>s → c → a → t</code>. Wąskim gardłem jest a → t o pojemności 2.' },
+        { caption: 'Po wysłaniu 2 jednostek', active: ['sc', 'ca', 'at'], total: '<code>3 + 1 + 2 = 6</code>', capacities: { sa: 0, sc: 2, ca: 1, ab: 2, ad: 4, at: 0, cd: 0, dt: 0 }, explanation: 'Do ujścia dotarło łącznie 6 jednostek. Oba łuki prowadzące do t są teraz nasycone.' },
+        { caption: 'Brak kolejnej ścieżki', active: [], total: '<code>Maksymalny przepływ: 6</code>', capacities: { sa: 0, sc: 2, ca: 1, ab: 2, ad: 4, at: 0, cd: 0, dt: 0 }, explanation: 'Przekrój przy ujściu ma pojemność 2 + 4 = 6. Skoro osiągnęliśmy tę wartość, przepływu nie da się powiększyć.' }
+      ];
+      let flowStep = 0;
+      const setFlowStep = (index) => {
+        const demo = document.querySelector('.flow-demo');
+        if (!demo) return;
+        flowStep = Math.max(0, Math.min(flowSteps.length - 1, index));
+        const step = flowSteps[flowStep];
+        demo.querySelectorAll('.flow-edge, .flow-matrix td[data-edge]').forEach((element) => {
+          const capacity = step.capacities[element.dataset.edge];
+          element.classList.toggle('active', step.active.includes(element.dataset.edge));
+          element.classList.toggle('saturated', capacity === 0);
+          if (element.matches('td')) element.textContent = capacity;
+        });
+        demo.querySelectorAll('.flow-capacity').forEach((label) => label.textContent = step.capacities[label.dataset.edge]);
+        demo.querySelector('.flow-caption').textContent = step.caption;
+        demo.querySelector('.flow-total').innerHTML = step.total;
+        demo.querySelector('.flow-explanation').innerHTML = step.explanation;
+      };
+
+      const dinicCapacities = { sx: 5, sy: 5, yx: 5, xu: 5, yu: 5, yw: 5, ut: 5, wt: 5 };
+      const dinicSteps = [
+        { caption: 'BFS: graf poziomów', active: ['sx', 'sy', 'xu', 'yu', 'yw', 'ut', 'wt'], total: '', capacities: dinicCapacities, explanation: '<strong>BFS</strong> przypisuje poziomy 0–3. Łuk y → x pozostaje na tym samym poziomie, więc odpada. Łuk y → u prowadzi do następnego poziomu i pozostaje w grafie.' },
+        { caption: 'Ścieżka 1: s → x → u → t', active: ['sx', 'xu', 'ut'], total: '', capacities: dinicCapacities, explanation: 'Pierwsza ścieżka w grafie poziomów ma przepustowość 5, więc można nią przesłać 5 jednostek.' },
+        { caption: 'Po wysłaniu 5 jednostek', active: ['sx', 'xu', 'ut'], total: '<code>Przepływ: 5</code>', capacities: { sx: 0, sy: 5, yx: 5, xu: 0, yu: 5, yw: 5, ut: 0, wt: 5 }, explanation: 'Łuki s → x, x → u i u → t są nasycone. Graf poziomów nadal ma drugą niezależną ścieżkę.' },
+        { caption: 'Ścieżka 2: s → y → w → t', active: ['sy', 'yw', 'wt'], total: '<code>Dotychczas: 5</code>', capacities: { sx: 0, sy: 5, yx: 5, xu: 0, yu: 5, yw: 5, ut: 0, wt: 5 }, explanation: 'Dinic wyszukuje kolejną ścieżkę w tych samych poziomach: <code>s → y → w → t</code>.' },
+        { caption: 'Przepływ blokujący', active: ['sy', 'yw', 'wt'], total: '<code>5 + 5 = 10</code>', capacities: { sx: 0, sy: 0, yx: 5, xu: 0, yu: 5, yw: 0, ut: 0, wt: 0 }, explanation: 'Druga ścieżka przesyła kolejne 5 jednostek. Razem tworzą <strong>przepływ blokujący 10</strong>.' },
+        { caption: 'Brak dalszej ścieżki', active: [], total: '<code>Maksymalny przepływ: 10</code>', capacities: { sx: 0, sy: 0, yx: 5, xu: 0, yu: 5, yw: 0, ut: 0, wt: 0 }, explanation: 'Ze źródła s nie pozostał żaden łuk o dodatniej pojemności. Nie ma kolejnej ścieżki powiększającej.' }
+      ];
+      let dinicStep = 0;
+      const setDinicStep = (index) => {
+        const demo = document.querySelector('.dinic-demo');
+        if (!demo) return;
+        dinicStep = Math.max(0, Math.min(dinicSteps.length - 1, index));
+        const step = dinicSteps[dinicStep];
+        demo.querySelectorAll('.dinic-edge').forEach((edge) => {
+          const capacity = step.capacities[edge.dataset.edge];
+          edge.classList.toggle('active', step.active.includes(edge.dataset.edge));
+          edge.classList.toggle('saturated', capacity === 0);
+        });
+        demo.querySelectorAll('.dinic-capacity').forEach((label) => label.textContent = step.capacities[label.dataset.edge]);
+        demo.querySelector('.dinic-caption').textContent = step.caption;
+        demo.querySelector('.dinic-total').innerHTML = step.total;
+        demo.querySelector('.dinic-explanation').innerHTML = step.explanation;
+      };
+
+      const initializeLabs = () => {
+        document.querySelectorAll('video[data-youtube-fallback]').forEach((video) => {
+          const link = (video.closest('p') || video).nextElementSibling;
+          if (!link?.classList.contains('video-original')) return;
+          const showOriginal = () => {
+            video.pause();
+            video.hidden = true;
+            link.classList.add('video-unavailable');
+          };
+          video.addEventListener('error', showOriginal);
+          video.querySelectorAll('source').forEach((source) => source.addEventListener('error', showOriginal));
+          if (video.error || video.networkState === HTMLMediaElement.NETWORK_NO_SOURCE) showOriginal();
+        });
+        document.querySelectorAll('.hamming-x, .hamming-y').forEach((input) => input.addEventListener('input', setHammingResult));
+        document.querySelector('.two-of-five-digit')?.addEventListener('input', setTwoOfFiveResult);
+        document.querySelector('.two-of-five-word')?.addEventListener('input', setTwoOfFiveCheckResult);
+        document.querySelector('.hdb3-input')?.addEventListener('input', setHdb3Result);
+        document.querySelector('.convolutional-input')?.addEventListener('input', setConvolutionalResult);
+        document.querySelector('.mesh-nodes')?.addEventListener('input', setMeshResult);
+        document.querySelector('.dijkstra-prev')?.addEventListener('click', () => setDijkstraStep(dijkstraStep - 1));
+        document.querySelector('.dijkstra-next')?.addEventListener('click', () => setDijkstraStep(dijkstraStep + 1));
+        document.querySelector('.flow-prev')?.addEventListener('click', () => setFlowStep(flowStep - 1));
+        document.querySelector('.flow-next')?.addEventListener('click', () => setFlowStep(flowStep + 1));
+        document.querySelector('.dinic-prev')?.addEventListener('click', () => setDinicStep(dinicStep - 1));
+        document.querySelector('.dinic-next')?.addEventListener('click', () => setDinicStep(dinicStep + 1));
+        setHammingResult();
+        setTwoOfFiveResult();
+        setTwoOfFiveCheckResult();
+        setHdb3Result();
+        setConvolutionalResult();
+        setMeshResult();
+        setDijkstraStep(0);
+        setFlowStep(0);
+        setDinicStep(0);
+      };
+      Reveal.on('ready', initializeLabs);
+    </script>
+  </body>
+</html>

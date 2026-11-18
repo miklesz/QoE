@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="260" viewBox="0 0 960 260" role="img" aria-labelledby="title desc">
+  <title id="title">Dwie reakcje odtwarzacza na spadek przepływności</title>
+  <desc id="desc">Pierwszy wariant ma przerwę na buforowanie. Drugi przechodzi na niższą rozdzielczość bez przerwy.</desc>
+  <defs>
+    <pattern id="buffer" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+      <path d="M0 0v12" stroke="#e8c891" stroke-width="4"/>
+    </pattern>
+  </defs>
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="375" y="24" text-anchor="middle" font-size="24" font-weight="700" fill="#13212e">Spadek przepływności</text>
+    <g font-size="25" font-weight="700" fill="#13212e">
+      <text x="18" y="64">A. Stała rozdzielczość</text>
+      <text x="18" y="172">B. Zmiana rozdzielczości</text>
+    </g>
+    <path d="M375 32v206" stroke="#13212e" stroke-width="3" stroke-dasharray="5 6"/>
+    <g>
+      <path d="M18 80h460v52H18zM694 80h248v52H694zM18 188h460v52H18z" fill="#005b6b"/>
+      <path d="M478 80h216v52H478z" fill="#fff1da"/>
+      <path d="M478 80h216v52H478z" fill="url(#buffer)"/>
+      <path d="M478 188h464v52H478z" fill="#d9eee2"/>
+    </g>
+    <path d="M375 80v52m0 56v52" stroke="#fff" stroke-width="3" stroke-dasharray="5 6"/>
+    <g text-anchor="middle" font-size="24" font-weight="700">
+      <g fill="#fff">
+        <text x="196" y="114">Wysoka rozdzielczość</text>
+        <text x="818" y="114">Wznowienie</text>
+        <text x="196" y="222">Wysoka rozdzielczość</text>
+      </g>
+      <text x="586" y="114" fill="#56350f">Buforowanie</text>
+      <text x="710" y="222" fill="#14432c">Niższa rozdzielczość bez przerwy</text>
+    </g>
+  </g>
+</svg>

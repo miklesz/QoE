@@ -202,7 +202,7 @@ W środowisku OTT dostawcy rywalizują o odbiorcę. Żeby ustalić, czy problem 
 
 ![Przykład telewizora z interfejsem wideo na żądanie](source-media/image14.jpeg)
 
-<p class="small">VIA Gallery, <a href="https://commons.wikimedia.org/w/index.php?curid=38934022">Wikimedia Commons</a>, CC BY 2.0.</p>
+<p class="small">VIA Gallery, <a href="https://www.flickr.com/photos/viagallery/5811466570">Flickr</a>, CC BY 2.0.</p>
 
 </div></div>
 
@@ -715,16 +715,11 @@ Widzowie zgłaszają, że film się zacina, choć średnia przepływność wygl�
 2. **Co odczuł widz?** Czy usługa pozwoliła wykonać zadanie?
 3. **Na czym opiera się wniosek?** Na ocenach ludzi czy na modelu skalibrowanym względem tych ocen?
 
----
-
-## Nagranie źródłowego wykładu
-
-<p class="video-intro">Wersja angielska z AMIPaC (19:18). Osobny materiał do odtworzenia, bez powtarzania części wykładowej.</p>
-
-<video controls playsinline preload="metadata" style="max-height:370px"><source src="media/local-replacements/qoe-wyklad.mp4" type="video/mp4" onerror="this.parentElement.hidden=true;this.parentElement.nextElementSibling.hidden=false"></video>
-<p class="video-original" hidden>Brak lokalnej kopii nagrania. Źródłowy plik MP4 jest w materiałach AMIPaC do wykładu Multimedia Quality of Experience.</p>
-
 <!-- study-only:start -->
+
+### Nagranie do samodzielnej nauki
+
+[Multimedia Quality of Experience](https://miklesz.github.io/QoE/lecture/media/local-replacements/qoe-wyklad.mp4) (AMIPaC, po angielsku, 19:18) to alternatywne omówienie tematu.
 
 ### Materiały źródłowe
 
